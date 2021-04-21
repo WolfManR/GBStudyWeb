@@ -1,0 +1,11 @@
+# Build time cache
+[Bb]in/
+[Oo]bj/
+
+# IDE's cahce
+.idea/
+.vs/
+
+# files
+*.db
+*.user

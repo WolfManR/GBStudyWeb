@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
+using MetricsManager.Exceptions;
 using MetricsManager.Models;
 using MetricsManager.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +23,15 @@ namespace MetricsManager.Controllers
         {
             try
             {
-                _store.AddTemperature(weather.Temperature,weather.Time);
+                _store.AddTemperature(weather.Temperature, weather.Time);
             }
-            catch (Exception e)
+            catch (DataStoreException e)
             {
-                return BadRequest(e);
+                return Problem(e.Message);
+            }
+            catch
+            {
+                return StatusCode(500);
             }
             return Ok();
         } 
@@ -35,11 +41,15 @@ namespace MetricsManager.Controllers
         {
             try
             {
-                _store.UpdateTemperature(weather.Temperature,weather.Time);
+                _store.UpdateTemperature(weather.Temperature, weather.Time);
             }
-            catch (Exception e)
+            catch (DataStoreException e)
             {
-                return NotFound(e);
+                return BadRequest(e.Message);
+            }
+            catch
+            {
+                return StatusCode(500);
             }
             return Ok();
         } 
@@ -49,11 +59,15 @@ namespace MetricsManager.Controllers
         {
             try
             {
-                _store.RemoveTemperature(beginTime,endTime);
+                _store.RemoveTemperature(beginTime, endTime);
             }
-            catch (Exception e)
+            catch (DataStoreException e)
             {
-                return NotFound(e);
+                return Ok(e.Message);
+            }
+            catch
+            {
+                return StatusCode(500);
             }
             return Ok();
         } 
@@ -65,7 +79,7 @@ namespace MetricsManager.Controllers
             if (weather.Count <= 0)
                 return NotFound();
 
-            return Content(string.Join(";",weather));
+            return Ok(weather);
         }
 
         [HttpGet]

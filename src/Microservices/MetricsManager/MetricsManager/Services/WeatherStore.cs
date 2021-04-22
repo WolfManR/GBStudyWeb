@@ -12,8 +12,10 @@ namespace MetricsManager.Services
 
         public void AddTemperature(double temperature, DateTime time)
         {
-            if (!_weather.TryAdd(time, temperature))
-                throw new DataStoreException($"Failure to add temperature {temperature} at {time}");
+            if (_weather.TryAdd(time, temperature)) return;
+            if (_weather.ContainsKey(time))
+                throw new DataStoreException($"Entry on time {time} already exist, maybe you try update it?");
+            throw new DataStoreException($"Failure to add temperature {temperature} at {time}");
         }
 
         public void UpdateTemperature(double temperature, DateTime time)

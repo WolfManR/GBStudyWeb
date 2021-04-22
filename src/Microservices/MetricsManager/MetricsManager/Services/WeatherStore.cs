@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MetricsManager.Exceptions;
+using MetricsManager.Models;
 
 namespace MetricsManager.Services
 {
@@ -36,6 +37,12 @@ namespace MetricsManager.Services
                 .Where(pair => pair.Key > start && pair.Key < end)
                 .OrderBy(pair => pair.Key)
                 .Select(pair => (pair.Key,pair.Value))
+                .ToList();
+
+        public List<Weather> GetAllTemperatures() =>
+            _weather
+                .OrderBy(pair => pair.Key)
+                .Select(pair => new Weather(){Temperature = pair.Value,Time = pair.Key})
                 .ToList();
     }
 }

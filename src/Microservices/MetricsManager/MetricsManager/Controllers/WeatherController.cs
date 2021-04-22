@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MetricsManager.Models;
 using MetricsManager.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +58,7 @@ namespace MetricsManager.Controllers
             return Ok();
         } 
         
-        [HttpGet]
+        [HttpGet("getRange")]
         public IActionResult GetTemperatures([FromQuery] DateTime beginTime, [FromQuery] DateTime endTime)
         {
             var weather = _store.GetTemperatures(beginTime, endTime);
@@ -65,6 +66,13 @@ namespace MetricsManager.Controllers
                 return NotFound();
 
             return Content(string.Join(";",weather));
-        } 
+        }
+
+        [HttpGet]
+        public IEnumerable<Weather> GetAllTemperatures()
+        {
+            var weather = _store.GetAllTemperatures();
+            return weather;
+        }
     }
 }

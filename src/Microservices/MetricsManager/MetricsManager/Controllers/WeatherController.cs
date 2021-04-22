@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using MetricsManager.Exceptions;
 using MetricsManager.Models;
 using MetricsManager.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +23,9 @@ namespace MetricsManager.Controllers
             {
                 _store.AddTemperature(weather.Temperature, weather.Time);
             }
-            catch (DataStoreException e)
+            catch(ArgumentException)
             {
-                return Problem(e.Message);
+                return BadRequest();
             }
             catch
             {
@@ -43,9 +41,9 @@ namespace MetricsManager.Controllers
             {
                 _store.UpdateTemperature(weather.Temperature, weather.Time);
             }
-            catch (DataStoreException e)
+            catch (ArgumentException)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
             catch
             {
@@ -60,10 +58,6 @@ namespace MetricsManager.Controllers
             try
             {
                 _store.RemoveTemperature(beginTime, endTime);
-            }
-            catch (DataStoreException e)
-            {
-                return Ok(e.Message);
             }
             catch
             {

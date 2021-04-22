@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MetricsManager.Exceptions;
 using MetricsManager.Models;
 
 namespace MetricsManager.Services
@@ -14,22 +13,21 @@ namespace MetricsManager.Services
         {
             if (_weather.TryAdd(time, temperature)) return;
             if (_weather.ContainsKey(time))
-                throw new DataStoreException($"Entry on time {time} already exist, maybe you try update it?");
-            throw new DataStoreException($"Failure to add temperature {temperature} at {time}");
+                throw new ArgumentException($"Entry on time {time} already exist, maybe you try update it?");
+            throw new InvalidOperationException($"Failure to add temperature {temperature} at {time}");
         }
 
         public void UpdateTemperature(double temperature, DateTime time)
         {
             if (!_weather.ContainsKey(time))
-                throw new DataStoreException($"Not existed entry at {time}");
+                throw new ArgumentException($"Not existed entry at {time}");
             _weather[time] = temperature;
         }
 
         public void RemoveTemperature(DateTime beginTime, DateTime endTime)
         {
             var temperatures = GetTemperatures(beginTime, endTime);
-            if (!temperatures.Any())
-                throw new DataStoreException($"Not existed entries in range [{beginTime} - {endTime}]");
+            if (!temperatures.Any()) return;
             foreach (var (time,_) in temperatures)
                 _weather.Remove(time);
         }

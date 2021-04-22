@@ -1,6 +1,6 @@
+using MetricsManager.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,6 +12,8 @@ namespace MetricsManager
         {
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "Metrics manager api", Version = "v1"}));
+
+            services.AddServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -22,18 +22,20 @@ namespace MetricsManager.Services
             _weather[time] = temperature;
         }
 
-        public void RemoveTemperature(DateTime time)
+        public void RemoveTemperature(DateTime beginTime, DateTime endTime)
         {
-            if (!_weather.ContainsKey(time))
-                throw new DataStoreException($"Not existed entry at {time}");
-            _weather.Remove(time);
+            var temperatures = GetTemperatures(beginTime, endTime);
+            if (!temperatures.Any())
+                throw new DataStoreException($"Not existed entries in range [{beginTime} - {endTime}]");
+            foreach (var (time,_) in temperatures)
+                _weather.Remove(time);
         }
 
-        public IEnumerable<(DateTime, double)> GetTemperatures(DateTime start, DateTime end)
-        {
-            var weather = _weather.Where(pair => pair.Key > start && pair.Key < end).OrderBy(pair => pair.Key);
-            foreach (var (time, temperature) in weather)
-                yield return (time, temperature);
-        }
+        public List<(DateTime, double)> GetTemperatures(DateTime start, DateTime end) =>
+            _weather
+                .Where(pair => pair.Key > start && pair.Key < end)
+                .OrderBy(pair => pair.Key)
+                .Select(pair => (pair.Key,pair.Value))
+                .ToList();
     }
 }

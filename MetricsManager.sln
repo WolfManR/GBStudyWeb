@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManager", "src\Micro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgents", "src\Microservices\MetricsAgents\MetricsAgents.csproj", "{B586FFEB-DC40-460D-9BA8-9639A2BA17EE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{5E400CC0-AFD9-4293-96C0-A021BEDB2D26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{965E0330-4AE6-4E88-8D00-B1739DD717EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerTests", "tests\MetricsManagerTests\MetricsManagerTests.csproj", "{9D0606E1-DD50-46E6-8594-151B03584909}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,14 @@ Global
 		{B586FFEB-DC40-460D-9BA8-9639A2BA17EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B586FFEB-DC40-460D-9BA8-9639A2BA17EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B586FFEB-DC40-460D-9BA8-9639A2BA17EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D0606E1-DD50-46E6-8594-151B03584909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D0606E1-DD50-46E6-8594-151B03584909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D0606E1-DD50-46E6-8594-151B03584909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D0606E1-DD50-46E6-8594-151B03584909}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B586FFEB-DC40-460D-9BA8-9639A2BA17EE} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
+		{5BA9B5DE-96D3-4633-829A-3C6081118D7E} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
+		{9D0606E1-DD50-46E6-8594-151B03584909} = {965E0330-4AE6-4E88-8D00-B1739DD717EF}
 	EndGlobalSection
 EndGlobal

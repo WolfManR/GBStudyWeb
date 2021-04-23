@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerTests", "test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgent", "src\Microservices\MetricsAgent\MetricsAgent.csproj", "{5DEE4581-AD33-41EE-821A-5DC1943946C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgentTests", "tests\MetricsAgentTests\MetricsAgentTests.csproj", "{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +30,15 @@ Global
 		{5DEE4581-AD33-41EE-821A-5DC1943946C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DEE4581-AD33-41EE-821A-5DC1943946C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DEE4581-AD33-41EE-821A-5DC1943946C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5BA9B5DE-96D3-4633-829A-3C6081118D7E} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
 		{9D0606E1-DD50-46E6-8594-151B03584909} = {965E0330-4AE6-4E88-8D00-B1739DD717EF}
 		{5DEE4581-AD33-41EE-821A-5DC1943946C1} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
+		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED} = {965E0330-4AE6-4E88-8D00-B1739DD717EF}
 	EndGlobalSection
 EndGlobal

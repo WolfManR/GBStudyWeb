@@ -8,7 +8,7 @@ namespace MetricsAgent.Controllers.Requests
     (
         [FromRoute(Name = "fromTime")] TimeSpan FromTime,
         [FromRoute(Name = "toTime")] TimeSpan ToTime,
-        [FromRoute(Name = "percentile")] Percentiles Percentile
+        [FromRoute(Name = "percentile")] Percentile Percentile
     );
 
     public record GetCpuMetricsRequest

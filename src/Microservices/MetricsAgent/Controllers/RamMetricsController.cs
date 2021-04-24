@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsAgent.Controllers
 {
-    public class RamController : ApiController
+    [Route("api/metrics/ram")]
+    public class RamMetricsController : ApiController
     {
         [HttpGet("available")]
         public IActionResult GetAvailableSpaceInfo()

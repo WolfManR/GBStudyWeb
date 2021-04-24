@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public enum Percentiles
+    public enum Percentile
     {
         Median = 0,
         P75 = 1,

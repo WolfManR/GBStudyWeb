@@ -5,13 +5,13 @@ namespace MetricsAgent.Controllers
 {
     public class CpuController : ApiController
     {
-        [HttpGet("from/{fromTime:datetime}/to/{toTime:datetime}/percentiles/{percentile}")]
+        [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetrics([FromRoute] GetCpuMetricsByPercentilesRequest request)
         {
             return Ok();
         }
 
-        [HttpGet("from/{fromTime:datetime}/to/{toTime:datetime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetrics([FromRoute] GetCpuMetricsRequest request)
         {
             return Ok();

@@ -5,7 +5,7 @@ namespace MetricsAgent.Controllers.Requests
 {
     public record GetDotnetMetricsRequest
     (
-        [FromRoute(Name = "fromTime")] DateTime FromTime,
-        [FromRoute(Name = "toTime")] DateTime ToTime
+        [FromRoute(Name = "fromTime")] TimeSpan FromTime,
+        [FromRoute(Name = "toTime")] TimeSpan ToTime
     );
 }

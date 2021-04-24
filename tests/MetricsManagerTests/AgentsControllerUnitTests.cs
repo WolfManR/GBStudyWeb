@@ -11,9 +11,12 @@ namespace MetricsManagerTests
         private readonly AgentsController _controller;
 
 
-        public AgentsControllerUnitTests() => _controller = new();
-        
-        
+        public AgentsControllerUnitTests()
+        {
+            _controller = new();
+        }
+
+
         [Fact]
         public void RegisterAgent_ReturnsOk()
         {

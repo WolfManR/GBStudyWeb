@@ -1,5 +1,4 @@
 using System;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
@@ -7,8 +6,8 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/dotnet")]
     public class DotnetMetricsController : ApiController
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
+        [HttpGet("errors-count/agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetErrorsCountFromAgent(
             [FromRoute] int agentId, 
             [FromRoute] TimeSpan fromTime, 
             [FromRoute] TimeSpan toTime)
@@ -16,27 +15,10 @@ namespace MetricsManager.Controllers
             return Ok();
         }
 
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
-        public IActionResult GetMetricsByPercentileFromAgent(
-            [FromRoute] int agentId, 
+        [HttpGet("errors-count/cluster/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetErrorsCountFromAllCluster(
             [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime,
-            [FromRoute] Percentile percentile)
-        {
-            return Ok();
-        }
-
-        [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
-        {
-            return Ok();
-        }
-
-        [HttpGet("cluster/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
-        public IActionResult GetMetricsByPercentileFromAllCluster(
-            [FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime,
-            [FromRoute] Percentile percentile)
+            [FromRoute] TimeSpan toTime)
         {
             return Ok();
         }

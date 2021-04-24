@@ -52,7 +52,6 @@ namespace MetricsManagerTests
         public void GetMetricsFromAllCluster_ReturnsOk()
         {
             //Arrange
-            var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
 
@@ -67,7 +66,6 @@ namespace MetricsManagerTests
         public void GetMetricsByPercentileFromAllCluster_ReturnsOk()
         {
             //Arrange
-            var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
             var percentile = Percentile.Median;

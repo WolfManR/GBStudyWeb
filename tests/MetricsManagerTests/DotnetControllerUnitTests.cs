@@ -26,23 +26,7 @@ namespace MetricsManagerTests
             var toTime = TimeSpan.FromSeconds(100);
 
             //Act
-            var result = _controller.GetMetricsFromAgent(agentId, fromTime, toTime);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        
-        [Fact]
-        public void GetMetricsByPercentile_ReturnsOk()
-        {
-            //Arrange
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-
-            //Act
-            var result = _controller.GetMetricsByPercentileFromAgent(agentId, fromTime, toTime, percentile);
+            var result = _controller.GetErrorsCountFromAgent(agentId, fromTime, toTime);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -52,28 +36,11 @@ namespace MetricsManagerTests
         public void GetMetricsFromAllCluster_ReturnsOk()
         {
             //Arrange
-            var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
 
             //Act
-            var result = _controller.GetMetricsFromAllCluster(fromTime, toTime);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        
-        [Fact]
-        public void GetMetricsByPercentileFromAllCluster_ReturnsOk()
-        {
-            //Arrange
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-
-            //Act
-            var result = _controller.GetMetricsByPercentileFromAllCluster(fromTime, toTime, percentile);
+            var result = _controller.GetErrorsCountFromAllCluster(fromTime, toTime);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

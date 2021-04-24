@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +23,12 @@ namespace MetricsManager.Controllers
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
             return Ok();
+        }
+
+        [HttpGet]
+        public IEnumerable<AgentInfo> GetRegisteredAgents()
+        {
+            return Array.Empty<AgentInfo>();
         }
     }
 }

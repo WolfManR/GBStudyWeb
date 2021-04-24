@@ -55,5 +55,15 @@ namespace MetricsManagerTests
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
+        
+        [Fact]
+        public void GetRegisteredAgents_ReturnsEmptyEnumerable()
+        {
+            //Act
+            var result = _controller.GetRegisteredAgents();
+
+            // Assert
+            Assert.Empty(result);
+        }
     }
 }

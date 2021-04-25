@@ -1,5 +1,4 @@
-using System;
-using Domain;
+using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
@@ -8,35 +7,27 @@ namespace MetricsManager.Controllers
     public class CpuMetricsController : ApiController
     {
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId, 
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsFromAgent([FromRoute] GetCpuMetricsFromAgentRequest request)
         {
             return Ok();
         }
 
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsByPercentileFromAgent(
-            [FromRoute] int agentId, 
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime,
-            [FromRoute] Percentile percentile)
+        [FromRoute] GetCpuMetricsByPercentileFromAgentRequest request)
         {
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster([FromRoute] TimeSpan fromTime, [FromRoute] TimeSpan toTime)
+        public IActionResult GetMetricsFromAllCluster([FromRoute] GetCpuMetricsFromAllCluster request)
         {
             return Ok();
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsByPercentileFromAllCluster(
-            [FromRoute] TimeSpan fromTime,
-            [FromRoute] TimeSpan toTime,
-            [FromRoute] Percentile percentile)
+            [FromRoute] GetCpuMetricsByPercentileFromAllCluster request)
         {
             return Ok();
         }

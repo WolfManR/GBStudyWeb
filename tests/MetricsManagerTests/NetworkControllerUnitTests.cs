@@ -1,5 +1,6 @@
 using System;
 using MetricsManager.Controllers;
+using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -23,9 +24,10 @@ namespace MetricsManagerTests
             var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
+            var request = new GetNetworkMetricsFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
-            var result = _controller.GetMetricsFromAgent(agentId, fromTime, toTime);
+            var result = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -37,9 +39,10 @@ namespace MetricsManagerTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
+            var request = new GetNetworkMetricsFromAllClusterRequest(fromTime, toTime);
 
             //Act
-            var result = _controller.GetMetricsFromAllCluster(fromTime, toTime);
+            var result = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

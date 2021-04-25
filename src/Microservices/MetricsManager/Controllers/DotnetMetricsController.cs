@@ -1,4 +1,5 @@
 using System;
+using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
@@ -8,17 +9,14 @@ namespace MetricsManager.Controllers
     {
         [HttpGet("errors-count/agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetErrorsCountFromAgent(
-            [FromRoute] int agentId, 
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime)
+            [FromRoute] GetErrorsCountFromAgentRequest request)
         {
             return Ok();
         }
 
         [HttpGet("errors-count/cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetErrorsCountFromAllCluster(
-            [FromRoute] TimeSpan fromTime, 
-            [FromRoute] TimeSpan toTime)
+            [FromRoute] GetErrorsCountFromAllClusterRequest request)
         {
             return Ok();
         }

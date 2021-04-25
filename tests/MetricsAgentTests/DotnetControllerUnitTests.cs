@@ -23,7 +23,7 @@ namespace MetricsAgentTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            GetDotnetMetricsRequest request = new(fromTime,toTime);
+            GetErrorsCountRequest request = new(fromTime,toTime);
             
             //Act
             var result = _controller.GetErrorsCount(request);

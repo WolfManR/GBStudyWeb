@@ -1,7 +1,7 @@
 namespace MetricsAgent.DataBase.Models
 {
-    public interface IEntity<TScu>
+    public interface IEntity<TId>
     {
-        public TScu Scu { get; init; }
+        public TId Id { get; init; }
     }
 }

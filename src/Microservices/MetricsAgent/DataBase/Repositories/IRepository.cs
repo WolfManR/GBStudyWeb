@@ -3,10 +3,10 @@ using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase.Repositories
 {
-    public interface IRepository<TEntity,TScu> where TEntity:IEntity<TScu>
+    public interface IRepository<TEntity,TId> where TEntity:IEntity<TId>
     {
         IList<TEntity> Get();
-        TEntity Get(TScu scu);
-        TScu Create(TEntity entity);
+        TEntity Get(TId id);
+        TId Create(TEntity entity);
     }
 }

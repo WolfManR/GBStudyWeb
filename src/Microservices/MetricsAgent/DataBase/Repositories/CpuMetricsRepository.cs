@@ -11,7 +11,7 @@ namespace MetricsAgent.DataBase.Repositories
         public IList<CpuMetrics> Get() => null;
 
         /// <inheritdoc />
-        public CpuMetrics Get(int scu) => null;
+        public CpuMetrics Get(int id) => null;
 
         /// <inheritdoc />
         public int Create(CpuMetrics entity) => 0;

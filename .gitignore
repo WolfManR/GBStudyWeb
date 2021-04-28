@@ -9,3 +9,6 @@
 # files
 *.db
 *.user
+
+# Logs
+[Ll]ogs/

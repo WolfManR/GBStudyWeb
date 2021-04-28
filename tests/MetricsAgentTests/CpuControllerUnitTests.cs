@@ -1,5 +1,4 @@
 using System;
-using Domain;
 using MetricsAgent.Controllers;
 using MetricsAgent.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -24,23 +23,7 @@ namespace MetricsAgentTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            GetCpuMetricsRequest request = new(fromTime,toTime);
-            
-            //Act
-            var result = _controller.GetMetrics(request);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        
-        [Fact]
-        public void GetMetricsByPercentile_ReturnsOk()
-        {
-            //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-            GetCpuMetricsByPercentilesRequest request = new(fromTime,toTime,percentile);
+            CpuMetricsRequest request = new(fromTime,toTime);
             
             //Act
             var result = _controller.GetMetrics(request);

@@ -7,7 +7,7 @@ namespace MetricsAgent.Controllers
     public class DotnetMetricsController : ApiController
     {
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCount([FromRoute] GetErrorsCountRequest request)
+        public IActionResult GetErrorsCount([FromRoute] ErrorsCountRequest request)
         {
             return Ok();
         }

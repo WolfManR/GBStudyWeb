@@ -1,5 +1,4 @@
 using System;
-using Domain;
 using MetricsManager.Controllers;
 using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsAgent.Controllers.Requests
 {
-    public record GetNetworkMetricsRequest
+    public record NetworkMetricsRequest
     (
-        [FromRoute(Name = "fromTime")] TimeSpan FromTime,
-        [FromRoute(Name = "toTime")] TimeSpan ToTime
+        [FromRoute] TimeSpan FromTime,
+        [FromRoute] TimeSpan ToTime
     );
 }

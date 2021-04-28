@@ -23,7 +23,7 @@ namespace MetricsAgentTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            GetNetworkMetricsRequest request = new(fromTime,toTime);
+            NetworkMetricsRequest request = new(fromTime,toTime);
             
             //Act
             var result = _controller.GetMetrics(request);

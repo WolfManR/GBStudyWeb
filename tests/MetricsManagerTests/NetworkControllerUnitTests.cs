@@ -24,7 +24,7 @@ namespace MetricsManagerTests
             var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetNetworkMetricsFromAgentRequest(agentId, fromTime, toTime);
+            var request = new NetworkMetricsFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
             var result = _controller.GetMetricsFromAgent(request);
@@ -39,7 +39,7 @@ namespace MetricsManagerTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetNetworkMetricsFromAllClusterRequest(fromTime, toTime);
+            var request = new NetworkMetricsFromAllClusterRequest(fromTime, toTime);
 
             //Act
             var result = _controller.GetMetricsFromAllCluster(request);

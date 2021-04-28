@@ -1,5 +1,4 @@
 using System;
-using Domain;
 using MetricsManager.Controllers;
 using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,7 @@ namespace MetricsManagerTests
             var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetErrorsCountFromAgentRequest(agentId, fromTime, toTime);
+            var request = new ErrorsCountFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
             var result = _controller.GetErrorsCountFromAgent(request);
@@ -40,7 +39,7 @@ namespace MetricsManagerTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetErrorsCountFromAllClusterRequest(fromTime, toTime);
+            var request = new ErrorsCountFromAllClusterRequest(fromTime, toTime);
 
             //Act
             var result = _controller.GetErrorsCountFromAllCluster(request);

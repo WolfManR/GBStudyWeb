@@ -1,4 +1,3 @@
-using System;
 using MetricsManager.Controllers;
 using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;

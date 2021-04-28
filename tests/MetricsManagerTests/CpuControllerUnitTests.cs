@@ -25,27 +25,10 @@ namespace MetricsManagerTests
             var agentId = 1;
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetCpuMetricsFromAgentRequest(agentId, fromTime, toTime);
+            var request = new CpuMetricsFromAgentRequest(agentId, fromTime, toTime);
             
             //Act
             var result = _controller.GetMetricsFromAgent(request);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        
-        [Fact]
-        public void GetMetricsByPercentile_ReturnsOk()
-        {
-            //Arrange
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-            var request = new GetCpuMetricsByPercentileFromAgentRequest(agentId, fromTime, toTime, percentile);
-            
-            //Act
-            var result = _controller.GetMetricsByPercentileFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -57,26 +40,10 @@ namespace MetricsManagerTests
             //Arrange
             var fromTime = TimeSpan.FromSeconds(0);
             var toTime = TimeSpan.FromSeconds(100);
-            var request = new GetCpuMetricsFromAllCluster(fromTime, toTime);
+            var request = new CpuMetricsFromAllClusterRequest(fromTime, toTime);
 
             //Act
             var result = _controller.GetMetricsFromAllCluster(request);
-
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-        
-        [Fact]
-        public void GetMetricsByPercentileFromAllCluster_ReturnsOk()
-        {
-            //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-            var request = new GetCpuMetricsByPercentileFromAllCluster(fromTime, toTime, percentile);
-
-            //Act
-            var result = _controller.GetMetricsByPercentileFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

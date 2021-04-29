@@ -5,7 +5,7 @@ namespace MetricsAgent.Controllers.Requests
 {
     public record NetworkMetricsRequest
     (
-        [FromRoute] TimeSpan FromTime,
-        [FromRoute] TimeSpan ToTime
+        [FromRoute] DateTimeOffset FromTime,
+        [FromRoute] DateTimeOffset ToTime
     );
 }

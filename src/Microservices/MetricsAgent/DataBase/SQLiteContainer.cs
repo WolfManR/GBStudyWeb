@@ -14,6 +14,7 @@ namespace MetricsAgent.DataBase
         public void Init(SQLiteConnection connection)
         {
             RecreateTable(connection,"cpumetrics","id INTEGER PRIMARY KEY, value INT, time INT");
+
         }
 
         private void RecreateTable(SQLiteConnection connection, string tableName, string tableEntrySchema)

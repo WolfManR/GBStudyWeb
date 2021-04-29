@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using Common;
 using MetricsAgent.DataBase.Models;
 using Microsoft.Extensions.Logging;
@@ -17,15 +18,18 @@ namespace MetricsAgent.DataBase.Repositories
             _container = container;
             _logger = logger;
         }
-        
-        
+
+
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <inheritdoc />
-        public IList<CpuMetrics> Get()
+        public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
         {
             using var connection = _container.CreateConnection();
             using var cmd = new SQLiteCommand(connection);
             cmd.CommandText = "SELECT * FROM cpumetrics";
             
+            connection.Open();
             var temp = new List<CpuMetrics>();
             using var reader = cmd.ExecuteReader();
             
@@ -35,58 +39,39 @@ namespace MetricsAgent.DataBase.Repositories
                 {
                     Id = reader.GetInt32(0),
                     Value = reader.GetInt32(1),
-                    Time = TimeSpan.FromSeconds(reader.GetInt32(2)) 
+                    Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt32(2)) 
                 });
             }
-
-            return temp;
+            connection.Close();
+            return temp.Count > 0 ? temp.Where(m => m.Time > from && m.Time < to).ToList() : null;
         }
 
         /// <inheritdoc />
-        public CpuMetrics Get(int id)
+        public void Create(CpuMetrics entity)
         {
             using var connection = _container.CreateConnection();
             using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM cpumetrics WHERE id=@id";
-            cmd.Parameters.AddWithValue("@id", id);
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                return new()
-                {
-                    Id = reader.GetInt32(0),
-                    Value = reader.GetInt32(1),
-                    Time = TimeSpan.FromSeconds(reader.GetInt32(2))
-                };
-            }
-            
-            return null;
-        }
-
-        /// <inheritdoc />
-        public int Create(CpuMetrics entity)
-        {
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "INSERT INTO cpumetrics(value,time) VALUES (@value,@time); SELECT last_insert_rowid();";
+            cmd.CommandText = "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);";
             cmd.Parameters.AddWithValue("@value", entity.Value);
-            cmd.Parameters.AddWithValue("@time", entity.Time.TotalSeconds);
+            cmd.Parameters.AddWithValue("@time", entity.Time.ToUnixTimeSeconds());
             cmd.Prepare();
-            var result = cmd.ExecuteScalar();
             
-            if (result is long id and < int.MaxValue)
+            connection.Open();
+            var result = cmd.ExecuteNonQuery();
+            connection.Close();
+            
+            if (result > 0)
             {
                 _logger.LogInformation(LogEvents.EntityCreationSuccess,"Cpu metric successfully added to database");
-                return (int) id;
+                return;
             }
             
             _logger.LogError(
                 LogEvents.EntityCreationFailure,
-                "Can't get entity id from database, returned value: {Value} larger than expected: {Expected}",
-                result.ToString(),
-                int.MaxValue
+                "Failure to add entity: {Value} {Time} to database",
+                entity.Value,
+                entity.Time.ToString("h:mm:ss tt zz")
                 );
-            return -1;
         }
     }
 }

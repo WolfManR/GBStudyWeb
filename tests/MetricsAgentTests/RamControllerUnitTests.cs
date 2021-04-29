@@ -1,4 +1,6 @@
+using System;
 using MetricsAgent.Controllers;
+using MetricsAgent.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -18,8 +20,13 @@ namespace MetricsAgentTests
         [Fact]
         public void GetAvailableSpaceInfo_ReturnsOk()
         {
+            //Arrange
+            var fromTime = DateTimeOffset.FromUnixTimeMilliseconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeMilliseconds(100);
+            AvailableSpaceInfoRequest request = new(fromTime,toTime);
+            
             //Act
-            var result = _controller.GetAvailableSpaceInfo();
+            var result = _controller.GetAvailableSpaceInfo(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

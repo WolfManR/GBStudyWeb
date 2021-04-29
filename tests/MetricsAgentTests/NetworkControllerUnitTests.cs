@@ -21,8 +21,8 @@ namespace MetricsAgentTests
         public void GetErrorsCount_ReturnsOk()
         {
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeMilliseconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeMilliseconds(100);
             NetworkMetricsRequest request = new(fromTime,toTime);
             
             //Act

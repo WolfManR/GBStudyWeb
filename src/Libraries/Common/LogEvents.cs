@@ -11,6 +11,7 @@
         public const int EntitiesObtainingSuccess = 104;
         public const int EntitiesObtainingFailure = 105;
 
-
+        public const int RequestReceived = 200;
+        public const int ResponseSend = 201;
     }
 }

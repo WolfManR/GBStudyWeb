@@ -27,8 +27,8 @@ namespace MetricsAgent.Controllers
             _logger.LogInformation(
                 LogEvents.RequestReceived,
                 "Get cpu metrics by time period request received: {From}, {To}"
-                ,request.FromTime.ToString("h:mm:ss tt zz"),
-                request.ToTime.ToString("h:mm:ss tt zz"));
+                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
             if (result is null)

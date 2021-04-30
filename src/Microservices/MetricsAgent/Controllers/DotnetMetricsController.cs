@@ -3,7 +3,6 @@ using Common;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.Controllers.Responses;
 using MetricsAgent.DataBase.Interfaces;
-using MetricsAgent.DataBase.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

@@ -2,7 +2,6 @@ using System;
 using MetricsAgent.Controllers;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DataBase.Interfaces;
-using MetricsAgent.DataBase.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;

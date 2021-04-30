@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using Common;
+using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Models;
 using Microsoft.Extensions.Logging;
 

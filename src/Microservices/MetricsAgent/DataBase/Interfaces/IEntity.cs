@@ -1,4 +1,4 @@
-namespace MetricsAgent.DataBase.Models
+namespace MetricsAgent.DataBase.Interfaces
 {
     public interface IEntity<TId>
     {

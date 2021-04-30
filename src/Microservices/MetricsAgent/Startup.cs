@@ -1,4 +1,5 @@
 using MetricsAgent.DataBase;
+using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

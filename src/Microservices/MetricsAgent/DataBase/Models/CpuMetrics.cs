@@ -1,3 +1,5 @@
+using MetricsAgent.DataBase.Interfaces;
+
 namespace MetricsAgent.DataBase.Models
 {
     public class CpuMetric : IEntity<int>

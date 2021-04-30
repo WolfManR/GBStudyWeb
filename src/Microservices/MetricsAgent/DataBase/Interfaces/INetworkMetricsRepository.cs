@@ -1,6 +1,6 @@
 using MetricsAgent.DataBase.Models;
 
-namespace MetricsAgent.DataBase.Repositories
+namespace MetricsAgent.DataBase.Interfaces
 {
     public interface INetworkMetricsRepository : IRepository<NetworkMetric,int>
     {

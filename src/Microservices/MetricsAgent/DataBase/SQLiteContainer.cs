@@ -23,7 +23,7 @@ namespace MetricsAgent.DataBase
         private Faker<CpuMetrics> cpuMetricsGenerator = new Faker<CpuMetrics>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32);
+            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
         
         public void Init()
@@ -50,7 +50,7 @@ namespace MetricsAgent.DataBase
             using var cmd = new SQLiteCommand(connection);
             cmd.CommandText = "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);";
             cmd.Parameters.AddWithValue("@value", metric.Value);
-            cmd.Parameters.AddWithValue("@time", metric.Time.ToUnixTimeSeconds());
+            cmd.Parameters.AddWithValue("@time", metric.Time);
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }

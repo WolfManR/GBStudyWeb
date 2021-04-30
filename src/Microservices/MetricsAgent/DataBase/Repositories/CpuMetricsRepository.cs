@@ -25,9 +25,15 @@ namespace MetricsAgent.DataBase.Repositories
         /// <inheritdoc />
         public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
         {
+            var fromSeconds = from.ToUnixTimeSeconds();
+            var toSeconds = to.ToUnixTimeSeconds();
+            
             using var connection = _container.CreateConnection();
             using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM cpumetrics";
+            cmd.CommandText = "SELECT * FROM cpumetrics WHERE (time > @from) and (time < @to)";
+            cmd.Parameters.AddWithValue("@from", fromSeconds);
+            cmd.Parameters.AddWithValue("@to", toSeconds);
+            cmd.Prepare();
             
             connection.Open();
             var temp = new List<CpuMetrics>();
@@ -39,11 +45,11 @@ namespace MetricsAgent.DataBase.Repositories
                 {
                     Id = reader.GetInt32(0),
                     Value = reader.GetInt32(1),
-                    Time = DateTimeOffset.FromUnixTimeSeconds(reader.GetInt32(2)) 
+                    Time = reader.GetInt32(2) 
                 });
             }
             connection.Close();
-            return temp.Count > 0 ? temp.Where(m => m.Time > from && m.Time < to).ToList() : null;
+            return temp.Count > 0 ? temp : null;
         }
 
         /// <inheritdoc />
@@ -53,7 +59,7 @@ namespace MetricsAgent.DataBase.Repositories
             using var cmd = new SQLiteCommand(connection);
             cmd.CommandText = "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);";
             cmd.Parameters.AddWithValue("@value", entity.Value);
-            cmd.Parameters.AddWithValue("@time", entity.Time.ToUnixTimeSeconds());
+            cmd.Parameters.AddWithValue("@time", entity.Time);
             cmd.Prepare();
             
             connection.Open();

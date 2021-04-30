@@ -1,4 +1,4 @@
-namespace MetricsAgent.DataBase.Interfaces
+namespace Common
 {
     public interface IEntity<TId>
     {

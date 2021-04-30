@@ -23,7 +23,7 @@ namespace MetricsAgent.DataBase.Repositories
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <inheritdoc />
-        public IList<CpuMetrics> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
+        public IList<CpuMetric> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
         {
             var fromSeconds = from.ToUnixTimeSeconds();
             var toSeconds = to.ToUnixTimeSeconds();
@@ -36,7 +36,7 @@ namespace MetricsAgent.DataBase.Repositories
             cmd.Prepare();
             
             connection.Open();
-            var temp = new List<CpuMetrics>();
+            var temp = new List<CpuMetric>();
             using var reader = cmd.ExecuteReader();
             
             while (reader.Read())
@@ -53,7 +53,7 @@ namespace MetricsAgent.DataBase.Repositories
         }
 
         /// <inheritdoc />
-        public void Create(CpuMetrics entity)
+        public void Create(CpuMetric entity)
         {
             using var connection = _container.CreateConnection();
             using var cmd = new SQLiteCommand(connection);

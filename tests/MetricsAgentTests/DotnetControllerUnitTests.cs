@@ -39,7 +39,7 @@ namespace MetricsAgentTests
         
         
         [Fact]
-        public void GetMetrics_VerifyRequestToRepository()
+        public void GetErrorsCount_VerifyRequestToRepository()
         {
             // Mock setup
             _repoMock.Setup(repo =>

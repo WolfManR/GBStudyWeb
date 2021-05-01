@@ -1,3 +1,4 @@
+using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers
@@ -5,14 +6,14 @@ namespace MetricsManager.Controllers
     [Route("api/metrics/ram")]
     public class RamMetricsController : ApiController
     {
-        [HttpGet("available/agent/{agentId}")]
-        public IActionResult GetAvailableSpaceInfoFromAgent([FromRoute] int agentId)
+        [HttpGet("available/agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetAvailableSpaceInfoFromAgent([FromRoute] RamMetricsFromAgentRequest request)
         {
             return Ok();
         }
 
-        [HttpGet("available/cluster")]
-        public IActionResult GetAvailableSpaceInfoFromAllCluster()
+        [HttpGet("available/cluster/from/{fromTime}/to/{toTime}")]
+        public IActionResult GetAvailableSpaceInfoFromAllCluster([FromRoute] RamMetricsFromAllClusterRequest request)
         {
             return Ok();
         }

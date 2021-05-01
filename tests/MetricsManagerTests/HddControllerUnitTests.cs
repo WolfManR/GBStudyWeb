@@ -1,4 +1,6 @@
+using System;
 using MetricsManager.Controllers;
+using MetricsManager.Controllers.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 
@@ -20,9 +22,12 @@ namespace MetricsManagerTests
         {
             //Arrange
             var agentId = 1;
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            var request = new HddMetricsFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
-            var result = _controller.GetLeftSpaceOnHddFromAgent(agentId);
+            var result = _controller.GetLeftSpaceOnHddFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -31,8 +36,13 @@ namespace MetricsManagerTests
         [Fact]
         public void GetLeftSpaceOnHddFromAllCluster_ReturnsOk()
         {
+            //Arrange
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
+            var request = new HddMetricsFromAllClusterRequest(fromTime, toTime);
+            
             //Act
-            var result = _controller.GetLeftSpaceOnHddFromAllCluster();
+            var result = _controller.GetLeftSpaceOnHddFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);

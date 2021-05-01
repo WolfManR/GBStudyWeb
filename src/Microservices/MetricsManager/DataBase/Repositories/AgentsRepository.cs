@@ -1,22 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using Common;
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
-using Microsoft.Extensions.Logging;
 
 namespace MetricsManager.DataBase.Repositories
 {
     public class AgentsRepository : IAgentsRepository
     {
         private readonly SQLiteContainer _container;
-        private readonly ILogger<AgentsRepository> _logger;
 
         
-        public AgentsRepository(SQLiteContainer container, ILogger<AgentsRepository> logger)
+        public AgentsRepository(SQLiteContainer container)
         {
             _container = container;
-            _logger = logger;
         }
         
         
@@ -35,27 +33,52 @@ namespace MetricsManager.DataBase.Repositories
                 var count = reader.GetInt32(0);
                 if (count > 0)
                 {
-                    _logger.LogError(
-                        LogEvents.EntityCreationFailure,
-                        "Failure to add entity: {Uri} to database, entity already exist",
-                        agent.Uri);
-                    return;
+                    throw new ArgumentException("Agent already exist"){Data = { ["uri"] = agent.Uri} };
                 }
             }
 
-            cmd.CommandText = "INSERT INTO agents(uri) VALUES (@uri);";
+            cmd.CommandText = "INSERT INTO agents(uri,isenabled) VALUES (@uri,@isenabled);";
+            cmd.Parameters.AddWithValue("@isenabled", agent.IsEnabled);
             var result = cmd.ExecuteNonQuery();
             
             if (result > 0)
             {
-                _logger.LogInformation(LogEvents.EntityCreationSuccess,"Agent successfully added to database");
                 return;
             }
-            
-            _logger.LogError(
-                LogEvents.EntityCreationFailure,
-                "Failure to add entity: {Uri} to database",
-                agent.Uri);
+
+            throw new InvalidOperationException("Failure to add entity"){Data = { ["uri"] = agent.Uri} };
+        }
+
+        public void Update(AgentInfo agent)
+        {
+            using var connection = _container.CreateConnection();
+            using var cmd = new SQLiteCommand(connection);
+            connection.Open();
+
+            cmd.CommandText = "SELECT Count(*) FROM agents WHERE id=@id";
+            cmd.Parameters.AddWithValue("@id", agent.Id);
+            var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                var count = reader.GetInt32(0);
+                if (count > 0)
+                {
+                    throw new ArgumentException($"Agent with id: {agent.Id} not exist", nameof(agent))
+                    {
+                        Data =
+                        {
+                            ["id"] = agent.Id,
+                            ["uri"] = agent.Uri, 
+                            ["isenabled"]=agent.IsEnabled
+                        }
+                    };
+                }
+            }
+
+            cmd.CommandText = "UPDATE agents SET uri=@uri, isenabled=@isenabled where id=@id;";
+            cmd.Parameters.AddWithValue("@uri", agent.Uri);
+            cmd.Parameters.AddWithValue("@isenabled", agent.IsEnabled);
+            cmd.ExecuteNonQuery();
         }
 
         /// <inheritdoc />

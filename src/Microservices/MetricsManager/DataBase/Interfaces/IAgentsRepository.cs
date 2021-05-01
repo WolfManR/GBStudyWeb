@@ -8,5 +8,6 @@ namespace MetricsManager.DataBase.Interfaces
         void Create(AgentInfo agent);
         IList<AgentInfo> Get();
         AgentInfo GetById(int id);
+        void Update(AgentInfo agent);
     }
 }

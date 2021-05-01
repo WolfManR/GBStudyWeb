@@ -5,10 +5,10 @@ namespace MetricsManager.Controllers.Requests
 {
     public record ErrorsCountFromAgentRequest(
         [FromRoute] int AgentId,
-        [FromRoute] TimeSpan FromTime,
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime,
+        [FromRoute] DateTimeOffset ToTime);
     
     public record ErrorsCountFromAllClusterRequest(
-        [FromRoute] TimeSpan FromTime,
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime,
+        [FromRoute] DateTimeOffset ToTime);
 }

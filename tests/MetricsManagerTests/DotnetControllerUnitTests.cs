@@ -22,8 +22,8 @@ namespace MetricsManagerTests
         {
             //Arrange
             var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
             var request = new ErrorsCountFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
@@ -37,8 +37,8 @@ namespace MetricsManagerTests
         public void GetMetricsFromAllCluster_ReturnsOk()
         {
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var fromTime = DateTimeOffset.FromUnixTimeSeconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeSeconds(100);
             var request = new ErrorsCountFromAllClusterRequest(fromTime, toTime);
 
             //Act

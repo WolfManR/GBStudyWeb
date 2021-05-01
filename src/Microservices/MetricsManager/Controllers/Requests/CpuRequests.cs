@@ -5,10 +5,10 @@ namespace MetricsManager.Controllers.Requests
 {
     public record CpuMetricsFromAgentRequest(
         [FromRoute] int AgentId, 
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 
     public record CpuMetricsFromAllClusterRequest(
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 }

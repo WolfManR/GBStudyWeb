@@ -1,6 +1,8 @@
+using Common;
+
 namespace MetricsManager.DataBase.Models
 {
-    public record DotnetMetric
+    public record DotnetMetric : IEntity<int>
     {
         public int Id { get; init; }
         public int AgentId { get; init; }

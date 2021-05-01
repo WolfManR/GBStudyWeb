@@ -1,6 +1,8 @@
+using Common;
+
 namespace MetricsManager.DataBase.Models
 {
-    public record HddMetric
+    public record HddMetric : IEntity<int>
     {
         public int Id { get; init; }
         public int AgentId { get; init; }

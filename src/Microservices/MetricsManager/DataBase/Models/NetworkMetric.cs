@@ -1,6 +1,8 @@
+using Common;
+
 namespace MetricsManager.DataBase.Models
 {
-    public record NetworkMetric
+    public record NetworkMetric : IEntity<int>
     {
         public int Id { get; init; }
         public int AgentId { get; init; }

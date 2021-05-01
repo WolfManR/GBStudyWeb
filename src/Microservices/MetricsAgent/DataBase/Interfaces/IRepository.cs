@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Common;
 
-namespace Common
+namespace MetricsAgent.DataBase.Interfaces
 {
     public interface IRepository<TEntity,TId> where TEntity:IEntity<TId>
     {

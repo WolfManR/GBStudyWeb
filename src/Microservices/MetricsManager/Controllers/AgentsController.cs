@@ -25,7 +25,7 @@ namespace MetricsManager.Controllers
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] RegisterAgentRequest request)
         {
-            var agent = new AgentInfo() {Uri = request.Address.AbsoluteUri};
+            var agent = new AgentInfo() {Uri = request.Uri.AbsoluteUri};
             try
             {
                 _repository.Create(agent);

@@ -89,7 +89,6 @@ namespace MetricsManager.DataBase.Repositories
             cmd.Parameters.AddWithValue("@value", entity.Value);
             cmd.Parameters.AddWithValue("@time", entity.Time);
             cmd.Parameters.AddWithValue("@agentId", entity.AgentId);
-            cmd.Prepare();
             
             connection.Open();
             var result = cmd.ExecuteNonQuery();

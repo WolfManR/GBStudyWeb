@@ -30,6 +30,10 @@ namespace MetricsAgent
                 ;
             services
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
+                .AddSingleton<IDotnetMetricsRepository, DotnetMetricsRepository>()
+                .AddSingleton<IHddMetricsRepository, HddMetricsRepository>()
+                .AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>()
+                .AddSingleton<IRamMetricsRepository, RamMetricsRepository>()
                 ;
         }
 

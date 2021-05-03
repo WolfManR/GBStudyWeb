@@ -26,31 +26,19 @@ namespace MetricsAgent.DataBase.Repositories
             var toSeconds = to.ToUnixTimeSeconds();
             
             using var connection = Container.CreateConnection();
-            var command = $"SELECT * FROM {TableName} WHERE (time > @from) and (time < @to)";
+            string command;
             object commandParameters;
             if (fromSeconds == toSeconds)
             {
-                command = $"SELECT * FROM {TableName} WHERE (time = @from)";
-                commandParameters = new
-                {
-                    from = fromSeconds
-                };
-            }
-            else if (fromSeconds > toSeconds)
-            {
-                commandParameters = new
-                {
-                    from = toSeconds,
-                    to = fromSeconds
-                };
+                command = $"SELECT * FROM {TableName} WHERE (time = @from);";
+                commandParameters = new { from = fromSeconds };
             }
             else
             {
-                commandParameters = new
-                {
-                    from = fromSeconds,
-                    to = toSeconds
-                };
+                command = $"SELECT * FROM {TableName} WHERE (time > @from) and (time < @to);";
+                commandParameters = fromSeconds > toSeconds 
+                    ? new { from = toSeconds, to = fromSeconds } 
+                    : new { from = fromSeconds, to = toSeconds };
             }
             
             var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();

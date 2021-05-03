@@ -24,6 +24,7 @@ namespace MetricsAgent
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"}));
 
+            services.AddAutoMapper(typeof(MapperProfile));
             services
                 .AddSingleton<SQLiteContainer>()
                 .AddSingleton<SQLiteInitializer>()

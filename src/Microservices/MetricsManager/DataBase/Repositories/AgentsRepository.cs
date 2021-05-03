@@ -37,7 +37,7 @@ namespace MetricsManager.DataBase.Repositories
 
             if (result <= 0)
             {
-                throw new InvalidOperationException("Failure to add entity") {Data = {["uri"] = agent.Uri}};
+                throw new InvalidOperationException("Failure to add agent") {Data = {["uri"] = agent.Uri}};
             }
         }
 
@@ -70,7 +70,7 @@ namespace MetricsManager.DataBase.Repositories
 
             if (result <= 0)
             {
-                throw new InvalidOperationException("Failure to update entity")
+                throw new InvalidOperationException("Failure to update agent")
                 {
                     Data =
                     {

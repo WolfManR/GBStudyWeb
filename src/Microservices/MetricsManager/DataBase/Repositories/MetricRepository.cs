@@ -16,6 +16,7 @@ namespace MetricsManager.DataBase.Repositories
             Container = container;
         }
 
+        
         protected abstract string TableName { get; }
         
         

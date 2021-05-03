@@ -17,7 +17,8 @@ namespace MetricsManager
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "Metrics manager api", Version = "v1"}));
 
             services.AddServices();
-            
+
+            services.AddAutoMapper(typeof(MapperProfile));
             services
                 .AddSingleton<SQLiteContainer>()
                 .AddSingleton<SQLiteInitializer>()

@@ -32,7 +32,7 @@ namespace MetricsAgentTests
             FreeHardDriveSpaceRequest request = new(fromTime,toTime);
             
             //Act
-            var result = _controller.GetFreeHardDriveSpace(request);
+            var result = _controller.GetByTimePeriod(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -56,7 +56,7 @@ namespace MetricsAgentTests
             FreeHardDriveSpaceRequest request = new(fromTime,toTime);
             
             //Act
-            _ = _controller.GetFreeHardDriveSpace(request);
+            _ = _controller.GetByTimePeriod(request);
 
             // Assert
             _repoMock.Verify(repo => 

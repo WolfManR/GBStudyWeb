@@ -21,7 +21,7 @@ namespace MetricsAgent.Controllers
         }
         
         [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCount([FromRoute] ErrorsCountRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] ErrorsCountRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -34,7 +34,10 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new DotnetMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+            return Ok(new DotnetMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<DotnetMetricResponse>)
+            });
         }
     }
 }

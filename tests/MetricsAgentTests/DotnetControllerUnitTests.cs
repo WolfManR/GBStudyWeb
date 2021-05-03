@@ -31,7 +31,7 @@ namespace MetricsAgentTests
             ErrorsCountRequest request = new(fromTime,toTime);
             
             //Act
-            var result = _controller.GetErrorsCount(request);
+            var result = _controller.GetByTimePeriod(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -55,7 +55,7 @@ namespace MetricsAgentTests
             ErrorsCountRequest request = new(fromTime,toTime);
             
             //Act
-            _ = _controller.GetErrorsCount(request);
+            _ = _controller.GetByTimePeriod(request);
 
             // Assert
             _repoMock.Verify(repo => 

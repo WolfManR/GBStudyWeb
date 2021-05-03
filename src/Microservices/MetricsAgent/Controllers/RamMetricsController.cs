@@ -22,7 +22,7 @@ namespace MetricsAgent.Controllers
         
         
         [HttpGet("available/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetAvailableSpaceInfo([FromRoute] AvailableSpaceInfoRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] AvailableSpaceInfoRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -35,7 +35,10 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new RamMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+            return Ok(new RamMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<RamMetricResponse>)
+            });
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MetricsAgent.Controllers
         }
         
         [HttpGet("left/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetFreeHardDriveSpace([FromRoute] FreeHardDriveSpaceRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] FreeHardDriveSpaceRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -34,7 +34,10 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new HddMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+            return Ok(new HddMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<HddMetricResponse>)
+            });
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MetricsAgent.Controllers
         }
         
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics([FromRoute] NetworkMetricsRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] NetworkMetricsRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -34,7 +34,10 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new NetworkMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+            return Ok(new NetworkMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<NetworkMetricResponse>)
+            });
         }
     }
 }

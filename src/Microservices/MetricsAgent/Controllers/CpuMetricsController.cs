@@ -22,7 +22,7 @@ namespace MetricsAgent.Controllers
         
         
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics([FromRoute] CpuMetricsRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] CpuMetricsRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -35,7 +35,11 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new CpuMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+
+            return Ok(new CpuMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<CpuMetricResponse>)
+            });
         }
     }
 }

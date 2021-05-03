@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Common;
 using MetricsManager.Controllers.Requests;
@@ -15,19 +14,21 @@ namespace MetricsManager.Controllers
         private readonly INetworkMetricsRepository _repository;
         private readonly ILogger<NetworkMetricsController> _logger;
 
+        
         public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
         
+        
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] NetworkMetricsFromAgentRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get network metrics by time period request received: {From}, {To}, for agent: {AgentId}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get network metrics by time period request received: {From}, {To}, for agent: {AgentId}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"),
                 request.AgentId);
 
@@ -36,13 +37,11 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new NetworkGetMetricsFromAgentResponse(){Metrics = result.Select(m =>new NetworkMetricResponse()
+            
+            return Ok(new NetworkGetMetricsFromAgentResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<NetworkMetricResponse>)
+            });
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
@@ -50,8 +49,8 @@ namespace MetricsManager.Controllers
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get network metrics by time period request received: {From}, {To}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get network metrics by time period request received: {From}, {To}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
@@ -59,13 +58,11 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new NetworkGetMetricsFromAllClusterResponse(){Metrics = result.Select(m =>new NetworkMetricResponse()
+            
+            return Ok(new NetworkGetMetricsFromAllClusterResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<NetworkMetricResponse>)
+            });
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Common;
 using MetricsManager.Controllers.Requests;
@@ -15,6 +14,7 @@ namespace MetricsManager.Controllers
         private readonly IHddMetricsRepository _repository;
         private readonly ILogger<HddMetricsController> _logger;
 
+        
         public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger)
         {
             _repository = repository;
@@ -23,12 +23,12 @@ namespace MetricsManager.Controllers
         
         
         [HttpGet("left/agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetLeftSpaceOnHddFromAgent([FromRoute] HddMetricsFromAgentRequest request)
+        public IActionResult GetMetricsFromAgent([FromRoute] HddMetricsFromAgentRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get hdd metrics by time period request received: {From}, {To}, for agent: {AgentId}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get hdd metrics by time period request received: {From}, {To}, for agent: {AgentId}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"),
                 request.AgentId);
 
@@ -37,22 +37,20 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new HddGetMetricsFromAgentResponse(){Metrics = result.Select(m =>new HddMetricResponse()
+            
+            return Ok(new HddGetMetricsFromAgentResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<HddMetricResponse>)
+            });
         }
 
         [HttpGet("left/cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetLeftSpaceOnHddFromAllCluster([FromRoute] HddMetricsFromAllClusterRequest request)
+        public IActionResult GetMetricsFromAllCluster([FromRoute] HddMetricsFromAllClusterRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get hdd metrics by time period request received: {From}, {To}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get hdd metrics by time period request received: {From}, {To}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
@@ -60,13 +58,11 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new HddGetMetricsFromAllClusterResponse(){Metrics = result.Select(m =>new HddMetricResponse()
+            
+            return Ok(new HddGetMetricsFromAllClusterResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<HddMetricResponse>)
+            });
         }
     }
 }

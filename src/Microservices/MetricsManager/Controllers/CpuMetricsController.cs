@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Common;
 using MetricsManager.Controllers.Requests;
@@ -15,6 +14,7 @@ namespace MetricsManager.Controllers
         private readonly ICpuMetricsRepository _repository;
         private readonly ILogger<CpuMetricsController> _logger;
 
+        
         public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
             _repository = repository;
@@ -27,8 +27,8 @@ namespace MetricsManager.Controllers
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get cpu metrics by time period request received: {From}, {To}, for agent: {AgentId}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get cpu metrics by time period request received: {From}, {To}, for agent: {AgentId}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"),
                 request.AgentId);
 
@@ -37,13 +37,11 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new CpuGetMetricsFromAgentResponse(){Metrics = result.Select(m =>new CpuMetricResponse()
+            
+            return Ok(new CpuGetMetricsFromAgentResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<CpuMetricResponse>)
+            });
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
@@ -51,8 +49,8 @@ namespace MetricsManager.Controllers
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get cpu metrics by time period request received: {From}, {To}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get cpu metrics by time period request received: {From}, {To}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
@@ -60,13 +58,11 @@ namespace MetricsManager.Controllers
             {
                 return NotFound();
             }
-            return Ok(new CpuGetMetricsFromAllClusterResponse(){Metrics = result.Select(m =>new CpuMetricResponse()
+            
+            return Ok(new CpuGetMetricsFromAllClusterResponse()
             {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<CpuMetricResponse>)
+            });
         }
     }
 }

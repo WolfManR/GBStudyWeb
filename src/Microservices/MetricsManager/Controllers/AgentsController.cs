@@ -15,6 +15,7 @@ namespace MetricsManager.Controllers
         private readonly IAgentsRepository _repository;
         private readonly ILogger<AgentsController> _logger;
 
+        
         public AgentsController(IAgentsRepository repository, ILogger<AgentsController> logger)
         {
             _repository = repository;
@@ -25,10 +26,9 @@ namespace MetricsManager.Controllers
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] RegisterAgentRequest request)
         {
-            var agent = new AgentInfo() {Uri = request.Uri.AbsoluteUri};
             try
             {
-                _repository.Create(agent);
+                _repository.Create(Mapper.Map<AgentInfo>(request));
                 _logger.LogInformation(LogEvents.EntityCreationSuccess, "Agent successfully added to database");
                 return Ok();
             }
@@ -138,16 +138,7 @@ namespace MetricsManager.Controllers
 
             return Ok(new GetRegisteredAgentsResponse()
             {
-                Agents = agents
-                    .Select(info =>
-                        new GetAgentResponse()
-                        {
-                            Id = info.Id,
-                            Uri = info.Uri,
-                            IsEnabled = info.IsEnabled
-                        }
-                    )
-                    .ToList()
+                Agents = agents.Select(Mapper.Map<GetAgentResponse>)
             });
         }
     }

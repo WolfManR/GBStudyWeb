@@ -5,12 +5,12 @@ namespace MetricsManager.Controllers.Responses
 {
     public class RamGetMetricsFromAgentResponse
     {
-        public List<RamMetricResponse> Metrics { get; init; }
+        public IEnumerable<RamMetricResponse> Metrics { get; init; }
     }
 
     public class RamGetMetricsFromAllClusterResponse
     {
-        public List<RamMetricResponse> Metrics { get; init; }
+        public IEnumerable<RamMetricResponse> Metrics { get; init; }
     }
     
     public class RamMetricResponse{

@@ -4,7 +4,7 @@ namespace MetricsManager.Controllers.Responses
 {
     public class GetRegisteredAgentsResponse
     {
-        public List<GetAgentResponse> Agents { get; init; }
+        public IEnumerable<GetAgentResponse> Agents { get; init; }
     }
 
     public class GetAgentResponse

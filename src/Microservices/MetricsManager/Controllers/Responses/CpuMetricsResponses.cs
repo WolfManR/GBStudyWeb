@@ -5,12 +5,12 @@ namespace MetricsManager.Controllers.Responses
 {
     public class CpuGetMetricsFromAgentResponse
     {
-        public List<CpuMetricResponse> Metrics { get; init; }
+        public IEnumerable<CpuMetricResponse> Metrics { get; init; }
     }
 
     public class CpuGetMetricsFromAllClusterResponse
     {
-        public List<CpuMetricResponse> Metrics { get; init; }
+        public IEnumerable<CpuMetricResponse> Metrics { get; init; }
     }
     
     public class CpuMetricResponse{

@@ -32,7 +32,7 @@ namespace MetricsManagerTests
             var request = new HddMetricsFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
-            var result = _controller.GetLeftSpaceOnHddFromAgent(request);
+            var result = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -47,7 +47,7 @@ namespace MetricsManagerTests
             var request = new HddMetricsFromAllClusterRequest(fromTime, toTime);
             
             //Act
-            var result = _controller.GetLeftSpaceOnHddFromAllCluster(request);
+            var result = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -72,7 +72,7 @@ namespace MetricsManagerTests
             var request = new HddMetricsFromAgentRequest(agentId, fromTime, toTime);
             
             //Act
-            _ = _controller.GetLeftSpaceOnHddFromAgent(request);
+            _ = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _repoMock.Verify(repo => 
@@ -101,7 +101,7 @@ namespace MetricsManagerTests
             var request = new HddMetricsFromAllClusterRequest(fromTime, toTime);
 
             //Act
-            _ = _controller.GetLeftSpaceOnHddFromAllCluster(request);
+            _ = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _repoMock.Verify(repo => 

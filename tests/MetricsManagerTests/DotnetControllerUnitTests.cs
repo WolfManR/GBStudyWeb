@@ -32,7 +32,7 @@ namespace MetricsManagerTests
             var request = new ErrorsCountFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
-            var result = _controller.GetErrorsCountFromAgent(request);
+            var result = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -47,7 +47,7 @@ namespace MetricsManagerTests
             var request = new ErrorsCountFromAllClusterRequest(fromTime, toTime);
 
             //Act
-            var result = _controller.GetErrorsCountFromAllCluster(request);
+            var result = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -72,7 +72,7 @@ namespace MetricsManagerTests
             var request = new ErrorsCountFromAgentRequest(agentId, fromTime, toTime);
             
             //Act
-            _ = _controller.GetErrorsCountFromAgent(request);
+            _ = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _repoMock.Verify(repo => 
@@ -101,7 +101,7 @@ namespace MetricsManagerTests
             var request = new ErrorsCountFromAllClusterRequest(fromTime, toTime);
 
             //Act
-            _ = _controller.GetErrorsCountFromAllCluster(request);
+            _ = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _repoMock.Verify(repo => 

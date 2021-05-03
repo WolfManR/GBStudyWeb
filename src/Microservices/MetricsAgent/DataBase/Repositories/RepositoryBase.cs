@@ -36,7 +36,7 @@ namespace MetricsAgent.DataBase.Repositories
                     from = fromSeconds
                 };
             }
-            else if (fromSeconds < toSeconds)
+            else if (fromSeconds > toSeconds)
             {
                 commandParameters = new
                 {

@@ -1,5 +1,6 @@
-using System.Data.SQLite;
+using System.Data;
 using Bogus;
+using Dapper;
 using MetricsManager.DataBase.Models;
 
 namespace MetricsManager.DataBase
@@ -8,150 +9,203 @@ namespace MetricsManager.DataBase
     {
         private readonly SQLiteContainer _container;
         private const int AgentsCount = 4;
-        
-        private Faker<AgentInfo> agentsGenerator = new Faker<AgentInfo>().CustomInstantiator(f => new AgentInfo()
+
+        private Faker<AgentInfo> agentsGenerator = new Faker<AgentInfo>().CustomInstantiator(f => new()
         {
             Id = f.IndexFaker,
             Uri = f.Internet.Url(),
             IsEnabled = f.Random.Bool()
         });
-        
-        private Faker<CpuMetric> cpuMetricsGenerator = new Faker<CpuMetric>().CustomInstantiator(f => new CpuMetric()
-        {
-            AgentId = f.Random.Int(1, AgentsCount),
-            Value = f.Random.Int(),
-            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
-        });
-        
-        private Faker<DotnetMetric> dotnetMetricsGenerator = new Faker<DotnetMetric>().CustomInstantiator(f => new DotnetMetric()
-        {
-            AgentId = f.Random.Int(1, AgentsCount),
-            Value = f.Random.Int(),
-            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
-        });
-        private Faker<HddMetric> hddMetricsGenerator = new Faker<HddMetric>().CustomInstantiator(f => new HddMetric()
-        {
-            AgentId = f.Random.Int(1, AgentsCount),
-            Value = f.Random.Int(),
-            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
-        });
-        private Faker<NetworkMetric> networkMetricsGenerator = new Faker<NetworkMetric>().CustomInstantiator(f => new NetworkMetric()
-        {
-            AgentId = f.Random.Int(1, AgentsCount),
-            Value = f.Random.Int(),
-            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
-        });
-        private Faker<RamMetric> ramMetricsGenerator = new Faker<RamMetric>().CustomInstantiator(f => new RamMetric()
+
+        private Faker<CpuMetric> cpuMetricsGenerator = new Faker<CpuMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
 
-        
+        private Faker<DotnetMetric> dotnetMetricsGenerator = new Faker<DotnetMetric>().CustomInstantiator(f => new()
+        {
+            AgentId = f.Random.Int(1, AgentsCount),
+            Value = f.Random.Int(),
+            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
+        });
+
+        private Faker<HddMetric> hddMetricsGenerator = new Faker<HddMetric>().CustomInstantiator(f => new()
+        {
+            AgentId = f.Random.Int(1, AgentsCount),
+            Value = f.Random.Int(),
+            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
+        });
+
+        private Faker<NetworkMetric> networkMetricsGenerator = new Faker<NetworkMetric>().CustomInstantiator(f => new()
+        {
+            AgentId = f.Random.Int(1, AgentsCount),
+            Value = f.Random.Int(),
+            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
+        });
+
+        private Faker<RamMetric> ramMetricsGenerator = new Faker<RamMetric>().CustomInstantiator(f => new()
+        {
+            AgentId = f.Random.Int(1, AgentsCount),
+            Value = f.Random.Int(),
+            Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
+        });
+
+
         public SQLiteInitializer(SQLiteContainer container)
         {
             _container = container;
         }
 
-        
+
         public void Init()
         {
             using var connection = _container.CreateConnection();
-            connection.Open();
-            using var command = new SQLiteCommand(connection);
-            
+
             // AGENTS
-            RecreateTable(command,"agents","id INTEGER PRIMARY KEY, uri text, isenabled INT NOT NULL");
+            RecreateTable(
+                connection,
+                "agents",
+                "id INTEGER PRIMARY KEY, uri text, isenabled INT NOT NULL"
+            );
             foreach (var agent in agentsGenerator.Generate(AgentsCount))
-                AddAgent(command,agent);
+            {
+                AddAgent(connection, agent);
+            }
+
             // CPU
-            RecreateTable(command,"cpumetrics","id INTEGER PRIMARY KEY, agentId INT NOT NULL, value INT, time INT");
+            RecreateTable(
+                connection,
+                "cpumetrics",
+                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
+            );
             foreach (var cpu in cpuMetricsGenerator.Generate(10))
-                AddCpuEntry(command,cpu);
+            {
+                AddCpuEntry(connection, cpu);
+            }
+
             // DOTNET
-            RecreateTable(command,"dotnetmetrics","id INTEGER PRIMARY KEY, agentId INT NOT NULL, value INT, time INT");
+            RecreateTable(
+                connection,
+                "dotnetmetrics",
+                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
+            );
             foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
-                AddDotnetEntry(command,dotnet);
+            {
+                AddDotnetEntry(connection, dotnet);
+            }
+
             // HDD
-            RecreateTable(command,"hddmetrics","id INTEGER PRIMARY KEY, agentId INT NOT NULL, value INT, time INT");
+            RecreateTable(
+                connection,
+                "hddmetrics",
+                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
+            );
             foreach (var hdd in hddMetricsGenerator.Generate(10))
-                AddHddEntry(command,hdd);
+            {
+                AddHddEntry(connection, hdd);
+            }
+
             // NETWORK
-            RecreateTable(command,"networkmetrics","id INTEGER PRIMARY KEY, agentId INT NOT NULL, value INT, time INT");
+            RecreateTable(
+                connection,
+                "networkmetrics",
+                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
+            );
             foreach (var network in networkMetricsGenerator.Generate(10))
-                AddNetworkEntry(command,network);
+            {
+                AddNetworkEntry(connection, network);
+            }
+
             //RAM
-            RecreateTable(command,"rammetrics","id INTEGER PRIMARY KEY, agentId INT NOT NULL, value INT, time INT");
+            RecreateTable(
+                connection,
+                "rammetrics",
+                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
+            );
             foreach (var ram in ramMetricsGenerator.Generate(10))
-                AddRamEntry(command,ram);
-            
-            connection.Close();
+            {
+                AddRamEntry(connection, ram);
+            }
         }
 
-        
-        private void RecreateTable(SQLiteCommand command, string tableName, string tableEntrySchema)
+
+        private void RecreateTable(IDbConnection connection, string tableName, string tableEntrySchema)
         {
-            command.Reset();
-            command.CommandText = $"DROP TABLE IF EXISTS {tableName}";
-            command.ExecuteNonQuery();
-            command.CommandText = $"CREATE TABLE {tableName}({tableEntrySchema})";
-            command.ExecuteNonQuery();
+            connection.Execute($"DROP TABLE IF EXISTS {tableName}");
+            connection.Execute($"CREATE TABLE {tableName}({tableEntrySchema})");
         }
-        
-        private void AddAgent(SQLiteCommand command, AgentInfo agent)
+
+        private void AddAgent(IDbConnection connection, AgentInfo agent)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO agents(uri,isenabled) VALUES (@uri,@isenabled);";
-            command.Parameters.AddWithValue("@uri", agent.Uri);
-            command.Parameters.AddWithValue("@isenabled", agent.IsEnabled);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO agents(uri,isenabled) VALUES (@uri,@isenabled);",
+                new
+                {
+                    uri = agent.Uri,
+                    isenabled = agent.IsEnabled
+                });
         }
-        
-        private void AddCpuEntry(SQLiteCommand command, CpuMetric metric)
+
+        private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO cpumetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            command.Parameters.AddWithValue("@value", metric.Value);
-            command.Parameters.AddWithValue("@time", metric.Time);
-            command.Parameters.AddWithValue("@agentId", metric.AgentId);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO cpumetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
+                {
+                    agentId = metric.AgentId,
+                    time = metric.Time,
+                    value = metric.Value
+                });
         }
-        private void AddDotnetEntry(SQLiteCommand command, DotnetMetric metric)
+
+        private void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO dotnetmetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            command.Parameters.AddWithValue("@value", metric.Value);
-            command.Parameters.AddWithValue("@time", metric.Time);
-            command.Parameters.AddWithValue("@agentId", metric.AgentId);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO dotnetmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
+                {
+                    agentId = metric.AgentId,
+                    time = metric.Time,
+                    value = metric.Value
+                });
         }
-        private void AddHddEntry(SQLiteCommand command, HddMetric metric)
+
+        private void AddHddEntry(IDbConnection connection, HddMetric metric)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO hddmetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            command.Parameters.AddWithValue("@value", metric.Value);
-            command.Parameters.AddWithValue("@time", metric.Time);
-            command.Parameters.AddWithValue("@agentId", metric.AgentId);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO hddmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
+                {
+                    agentId = metric.AgentId,
+                    time = metric.Time,
+                    value = metric.Value
+                });
         }
-        private void AddNetworkEntry(SQLiteCommand command, NetworkMetric metric)
+
+        private void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO networkmetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            command.Parameters.AddWithValue("@value", metric.Value);
-            command.Parameters.AddWithValue("@time", metric.Time);
-            command.Parameters.AddWithValue("@agentId", metric.AgentId);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO networkmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
+                {
+                    agentId = metric.AgentId,
+                    time = metric.Time,
+                    value = metric.Value
+                });
         }
-        private void AddRamEntry(SQLiteCommand command, RamMetric metric)
+
+        private void AddRamEntry(IDbConnection connection, RamMetric metric)
         {
-            command.Reset();
-            command.CommandText = "INSERT INTO rammetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            command.Parameters.AddWithValue("@value", metric.Value);
-            command.Parameters.AddWithValue("@time", metric.Time);
-            command.Parameters.AddWithValue("@agentId", metric.AgentId);
-            command.ExecuteNonQuery();
+            connection.Execute(
+                "INSERT INTO rammetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
+                {
+                    agentId = metric.AgentId,
+                    time = metric.Time,
+                    value = metric.Value
+                });
         }
     }
 }

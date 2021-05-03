@@ -1,5 +1,4 @@
 using System.Data;
-using System.Data.SQLite;
 using Bogus;
 using Dapper;
 using MetricsAgent.DataBase.Models;
@@ -51,30 +50,31 @@ namespace MetricsAgent.DataBase
         public void Init()
         {
             using var connection = _container.CreateConnection();
-            connection.Open();
 
             // CPU
             RecreateTable(connection, "cpumetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var cpu in cpuMetricsGenerator.Generate(10))
                 AddCpuEntry(connection, cpu);
+
             // DOTNET
             RecreateTable(connection, "dotnetmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
                 AddDotnetEntry(connection, dotnet);
+
             // HDD
             RecreateTable(connection, "hddmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var hdd in hddMetricsGenerator.Generate(10))
                 AddHddEntry(connection, hdd);
+
             // NETWORK
             RecreateTable(connection, "networkmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var network in networkMetricsGenerator.Generate(10))
                 AddNetworkEntry(connection, network);
+
             //RAM
             RecreateTable(connection, "rammetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var ram in ramMetricsGenerator.Generate(10))
                 AddRamEntry(connection, ram);
-
-            connection.Close();
         }
 
 
@@ -85,7 +85,7 @@ namespace MetricsAgent.DataBase
         }
 
 
-        private void AddCpuEntry(SQLiteConnection connection, CpuMetric metric)
+        private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
             connection.Execute(
                 "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);",

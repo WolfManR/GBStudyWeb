@@ -13,6 +13,6 @@ namespace MetricsAgent.DataBase
         }
 
 
-        public SQLiteConnection CreateConnection() => new SQLiteConnection(_connectionString);
+        public SQLiteConnection CreateConnection() => new(_connectionString);
     }
 }

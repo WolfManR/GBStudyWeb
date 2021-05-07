@@ -6,47 +6,47 @@ using MetricsManager.DataBase.Models;
 
 namespace MetricsManager.DataBase
 {
-    public class SQLiteInitializer
+    public class SqLiteInitializer
     {
         private readonly SQLiteContainer _container;
         private const int AgentsCount = 4;
 
-        private Faker<AgentInfo> agentsGenerator = new Faker<AgentInfo>().CustomInstantiator(f => new()
+        private readonly Faker<AgentInfo> _agentsGenerator = new Faker<AgentInfo>().CustomInstantiator(f => new()
         {
             Id = f.IndexFaker,
             Uri = f.Internet.Url(),
             IsEnabled = f.Random.Bool()
         });
 
-        private Faker<CpuMetric> cpuMetricsGenerator = new Faker<CpuMetric>().CustomInstantiator(f => new()
+        private readonly Faker<CpuMetric> _cpuMetricsGenerator = new Faker<CpuMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
 
-        private Faker<DotnetMetric> dotnetMetricsGenerator = new Faker<DotnetMetric>().CustomInstantiator(f => new()
+        private readonly Faker<DotnetMetric> _dotnetMetricsGenerator = new Faker<DotnetMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
 
-        private Faker<HddMetric> hddMetricsGenerator = new Faker<HddMetric>().CustomInstantiator(f => new()
+        private readonly Faker<HddMetric> _hddMetricsGenerator = new Faker<HddMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
 
-        private Faker<NetworkMetric> networkMetricsGenerator = new Faker<NetworkMetric>().CustomInstantiator(f => new()
+        private readonly Faker<NetworkMetric> _networkMetricsGenerator = new Faker<NetworkMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
 
-        private Faker<RamMetric> ramMetricsGenerator = new Faker<RamMetric>().CustomInstantiator(f => new()
+        private readonly Faker<RamMetric> _ramMetricsGenerator = new Faker<RamMetric>().CustomInstantiator(f => new()
         {
             AgentId = f.Random.Int(1, AgentsCount),
             Value = f.Random.Int(),
@@ -54,7 +54,7 @@ namespace MetricsManager.DataBase
         });
 
 
-        public SQLiteInitializer(SQLiteContainer container)
+        public SqLiteInitializer(SQLiteContainer container)
         {
             _container = container;
         }
@@ -70,7 +70,7 @@ namespace MetricsManager.DataBase
                 Values.AgentsMetricsTable,
                 "id INTEGER PRIMARY KEY, uri text, isenabled INT NOT NULL"
             );
-            foreach (var agent in agentsGenerator.Generate(AgentsCount))
+            foreach (var agent in _agentsGenerator.Generate(AgentsCount))
             {
                 AddAgent(connection, agent);
             }
@@ -81,7 +81,7 @@ namespace MetricsManager.DataBase
                 Values.CpuMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
-            foreach (var cpu in cpuMetricsGenerator.Generate(10))
+            foreach (var cpu in _cpuMetricsGenerator.Generate(10))
             {
                 AddCpuEntry(connection, cpu);
             }
@@ -92,7 +92,7 @@ namespace MetricsManager.DataBase
                 Values.DotnetMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
-            foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
+            foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
             {
                 AddDotnetEntry(connection, dotnet);
             }
@@ -103,7 +103,7 @@ namespace MetricsManager.DataBase
                 Values.HddMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
-            foreach (var hdd in hddMetricsGenerator.Generate(10))
+            foreach (var hdd in _hddMetricsGenerator.Generate(10))
             {
                 AddHddEntry(connection, hdd);
             }
@@ -114,7 +114,7 @@ namespace MetricsManager.DataBase
                 Values.NetworkMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
-            foreach (var network in networkMetricsGenerator.Generate(10))
+            foreach (var network in _networkMetricsGenerator.Generate(10))
             {
                 AddNetworkEntry(connection, network);
             }
@@ -125,20 +125,20 @@ namespace MetricsManager.DataBase
                 Values.RamMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
-            foreach (var ram in ramMetricsGenerator.Generate(10))
+            foreach (var ram in _ramMetricsGenerator.Generate(10))
             {
                 AddRamEntry(connection, ram);
             }
         }
 
 
-        private void RecreateTable(IDbConnection connection, string tableName, string tableEntrySchema)
+        private static void RecreateTable(IDbConnection connection, string tableName, string tableEntrySchema)
         {
             connection.Execute($"DROP TABLE IF EXISTS {tableName}");
             connection.Execute($"CREATE TABLE {tableName}({tableEntrySchema})");
         }
 
-        private void AddAgent(IDbConnection connection, AgentInfo agent)
+        private static void AddAgent(IDbConnection connection, AgentInfo agent)
         {
             connection.Execute(
                 $"INSERT INTO {Values.AgentsMetricsTable}(uri,isenabled) VALUES (@uri,@isenabled);",
@@ -149,7 +149,7 @@ namespace MetricsManager.DataBase
                 });
         }
 
-        private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
+        private static void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.CpuMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
@@ -161,7 +161,7 @@ namespace MetricsManager.DataBase
                 });
         }
 
-        private void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
+        private static void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.DotnetMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
@@ -173,7 +173,7 @@ namespace MetricsManager.DataBase
                 });
         }
 
-        private void AddHddEntry(IDbConnection connection, HddMetric metric)
+        private static void AddHddEntry(IDbConnection connection, HddMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.HddMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
@@ -185,7 +185,7 @@ namespace MetricsManager.DataBase
                 });
         }
 
-        private void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
+        private static void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.NetworkMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
@@ -197,7 +197,7 @@ namespace MetricsManager.DataBase
                 });
         }
 
-        private void AddRamEntry(IDbConnection connection, RamMetric metric)
+        private static void AddRamEntry(IDbConnection connection, RamMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.RamMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",

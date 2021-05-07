@@ -21,7 +21,7 @@ namespace MetricsManager
             services.AddAutoMapper(typeof(MapperProfile));
             services
                 .AddSingleton<SQLiteContainer>()
-                .AddSingleton<SQLiteInitializer>()
+                .AddSingleton<SqLiteInitializer>()
                 ;
             services
                 .AddSingleton<IAgentsRepository, AgentsRepository>()
@@ -33,7 +33,7 @@ namespace MetricsManager
                 ;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SqLiteInitializer initializer)
         {
             if (env.IsDevelopment())
             {

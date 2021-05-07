@@ -8,44 +8,44 @@ using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase
 {
-    public class SQLiteInitializer
+    public class SqLiteInitializer
     {
         private readonly SQLiteContainer _container;
         private readonly IMigrationRunner _migrationRunner;
 
 
-        private Faker<CpuMetric> cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
+        private readonly Faker<CpuMetric> _cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
             m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
 
-        private Faker<DotnetMetric> dotnetMetricsGenerator = new Faker<DotnetMetric>().Rules((f, m) =>
+        private readonly Faker<DotnetMetric> _dotnetMetricsGenerator = new Faker<DotnetMetric>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
             m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
 
-        private Faker<HddMetric> hddMetricsGenerator = new Faker<HddMetric>().Rules((f, m) =>
+        private readonly Faker<HddMetric> _hddMetricsGenerator = new Faker<HddMetric>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
             m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
 
-        private Faker<NetworkMetric> networkMetricsGenerator = new Faker<NetworkMetric>().Rules((f, m) =>
+        private readonly Faker<NetworkMetric> _networkMetricsGenerator = new Faker<NetworkMetric>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
             m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
 
-        private Faker<RamMetric> ramMetricsGenerator = new Faker<RamMetric>().Rules((f, m) =>
+        private readonly Faker<RamMetric> _ramMetricsGenerator = new Faker<RamMetric>().Rules((f, m) =>
         {
             m.Value = f.Random.Int();
             m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         });
 
 
-        public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
+        public SqLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
             _migrationRunner = migrationRunner;
@@ -61,37 +61,37 @@ namespace MetricsAgent.DataBase
 
             // CPU
             if (IsTableNotFilled(connection, Values.CpuMetricsTable))
-                foreach (var cpu in cpuMetricsGenerator.Generate(10))
+                foreach (var cpu in _cpuMetricsGenerator.Generate(10))
                     AddCpuEntry(connection, cpu);
 
             // DOTNET
             if (IsTableNotFilled(connection, Values.DotnetMetricsTable))
-                foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
+                foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
                     AddDotnetEntry(connection, dotnet);
 
             // HDD
             if (IsTableNotFilled(connection, Values.HddMetricsTable))
-                foreach (var hdd in hddMetricsGenerator.Generate(10))
+                foreach (var hdd in _hddMetricsGenerator.Generate(10))
                     AddHddEntry(connection, hdd);
 
             // NETWORK
             if (IsTableNotFilled(connection, Values.NetworkMetricsTable))
-                foreach (var network in networkMetricsGenerator.Generate(10))
+                foreach (var network in _networkMetricsGenerator.Generate(10))
                     AddNetworkEntry(connection, network);
 
             //RAM
             if (IsTableNotFilled(connection, Values.RamMetricsTable))
-                foreach (var ram in ramMetricsGenerator.Generate(10))
+                foreach (var ram in _ramMetricsGenerator.Generate(10))
                     AddRamEntry(connection, ram);
         }
 
-        private bool IsTableNotFilled(IDbConnection connection, string tableName)
+        private static bool IsTableNotFilled(IDbConnection connection, string tableName)
         {
             var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");
             return count <= 0;
         }
 
-        private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
+        private static void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.CpuMetricsTable}(value,time) VALUES (@value,@time);",
@@ -102,7 +102,7 @@ namespace MetricsAgent.DataBase
                 });
         }
 
-        private void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
+        private static void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.DotnetMetricsTable}(value,time) VALUES (@value,@time);",
@@ -113,7 +113,7 @@ namespace MetricsAgent.DataBase
                 });
         }
 
-        private void AddHddEntry(IDbConnection connection, HddMetric metric)
+        private static void AddHddEntry(IDbConnection connection, HddMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.HddMetricsTable}(value,time) VALUES (@value,@time);",
@@ -124,7 +124,7 @@ namespace MetricsAgent.DataBase
                 });
         }
 
-        private void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
+        private static void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.NetworkMetricsTable}(value,time) VALUES (@value,@time);",
@@ -135,7 +135,7 @@ namespace MetricsAgent.DataBase
                 });
         }
 
-        private void AddRamEntry(IDbConnection connection, RamMetric metric)
+        private static void AddRamEntry(IDbConnection connection, RamMetric metric)
         {
             connection.Execute(
                 $"INSERT INTO {Values.RamMetricsTable}(value,time) VALUES (@value,@time);",

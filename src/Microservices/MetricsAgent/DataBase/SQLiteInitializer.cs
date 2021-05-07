@@ -1,5 +1,6 @@
 using System.Data;
 using Bogus;
+using Common.Configuration;
 using Dapper;
 using MetricsAgent.DataBase.Models;
 
@@ -52,27 +53,27 @@ namespace MetricsAgent.DataBase
             using var connection = _container.CreateConnection();
 
             // CPU
-            RecreateTable(connection, "cpumetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
+            RecreateTable(connection, Values.CpuMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var cpu in cpuMetricsGenerator.Generate(10))
                 AddCpuEntry(connection, cpu);
 
             // DOTNET
-            RecreateTable(connection, "dotnetmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
+            RecreateTable(connection, Values.DotnetMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
                 AddDotnetEntry(connection, dotnet);
 
             // HDD
-            RecreateTable(connection, "hddmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
+            RecreateTable(connection, Values.HddMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var hdd in hddMetricsGenerator.Generate(10))
                 AddHddEntry(connection, hdd);
 
             // NETWORK
-            RecreateTable(connection, "networkmetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
+            RecreateTable(connection, Values.NetworkMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var network in networkMetricsGenerator.Generate(10))
                 AddNetworkEntry(connection, network);
 
             //RAM
-            RecreateTable(connection, "rammetrics", "id INTEGER PRIMARY KEY, value INT, time INT");
+            RecreateTable(connection, Values.RamMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
             foreach (var ram in ramMetricsGenerator.Generate(10))
                 AddRamEntry(connection, ram);
         }
@@ -88,7 +89,7 @@ namespace MetricsAgent.DataBase
         private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
             connection.Execute(
-                "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);",
+                $"INSERT INTO {Values.CpuMetricsTable}(value,time) VALUES (@value,@time);",
                 new
                 {
                     value = metric.Value,
@@ -99,7 +100,7 @@ namespace MetricsAgent.DataBase
         private void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
         {
             connection.Execute(
-                "INSERT INTO dotnetmetrics(value,time) VALUES (@value,@time);",
+                $"INSERT INTO {Values.DotnetMetricsTable}(value,time) VALUES (@value,@time);",
                 new
                 {
                     value = metric.Value,
@@ -110,7 +111,7 @@ namespace MetricsAgent.DataBase
         private void AddHddEntry(IDbConnection connection, HddMetric metric)
         {
             connection.Execute(
-                "INSERT INTO hddmetrics(value,time) VALUES (@value,@time);",
+                $"INSERT INTO {Values.HddMetricsTable}(value,time) VALUES (@value,@time);",
                 new
                 {
                     value = metric.Value,
@@ -121,7 +122,7 @@ namespace MetricsAgent.DataBase
         private void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
         {
             connection.Execute(
-                "INSERT INTO networkmetrics(value,time) VALUES (@value,@time);",
+                $"INSERT INTO {Values.NetworkMetricsTable}(value,time) VALUES (@value,@time);",
                 new
                 {
                     value = metric.Value,
@@ -132,7 +133,7 @@ namespace MetricsAgent.DataBase
         private void AddRamEntry(IDbConnection connection, RamMetric metric)
         {
             connection.Execute(
-                "INSERT INTO rammetrics(value,time) VALUES (@value,@time);",
+                $"INSERT INTO {Values.RamMetricsTable}(value,time) VALUES (@value,@time);",
                 new
                 {
                     value = metric.Value,

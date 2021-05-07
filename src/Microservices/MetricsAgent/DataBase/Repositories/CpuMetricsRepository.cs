@@ -1,4 +1,5 @@
 using System;
+using Common.Configuration;
 using Dapper;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Models;
@@ -12,7 +13,7 @@ namespace MetricsAgent.DataBase.Repositories
         }
 
 
-        protected override string TableName { get; } = "cpumetrics";
+        protected override string TableName { get; } = Values.CpuMetricsTable;
 
         
         /// <inheritdoc />

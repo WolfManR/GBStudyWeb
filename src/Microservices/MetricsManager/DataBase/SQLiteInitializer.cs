@@ -1,5 +1,6 @@
 using System.Data;
 using Bogus;
+using Common.Configuration;
 using Dapper;
 using MetricsManager.DataBase.Models;
 
@@ -66,7 +67,7 @@ namespace MetricsManager.DataBase
             // AGENTS
             RecreateTable(
                 connection,
-                "agents",
+                Values.AgentsMetricsTable,
                 "id INTEGER PRIMARY KEY, uri text, isenabled INT NOT NULL"
             );
             foreach (var agent in agentsGenerator.Generate(AgentsCount))
@@ -77,7 +78,7 @@ namespace MetricsManager.DataBase
             // CPU
             RecreateTable(
                 connection,
-                "cpumetrics",
+                Values.CpuMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
             foreach (var cpu in cpuMetricsGenerator.Generate(10))
@@ -88,7 +89,7 @@ namespace MetricsManager.DataBase
             // DOTNET
             RecreateTable(
                 connection,
-                "dotnetmetrics",
+                Values.DotnetMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
             foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
@@ -99,7 +100,7 @@ namespace MetricsManager.DataBase
             // HDD
             RecreateTable(
                 connection,
-                "hddmetrics",
+                Values.HddMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
             foreach (var hdd in hddMetricsGenerator.Generate(10))
@@ -110,7 +111,7 @@ namespace MetricsManager.DataBase
             // NETWORK
             RecreateTable(
                 connection,
-                "networkmetrics",
+                Values.NetworkMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
             foreach (var network in networkMetricsGenerator.Generate(10))
@@ -121,7 +122,7 @@ namespace MetricsManager.DataBase
             //RAM
             RecreateTable(
                 connection,
-                "rammetrics",
+                Values.RamMetricsTable,
                 "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
             );
             foreach (var ram in ramMetricsGenerator.Generate(10))
@@ -140,7 +141,7 @@ namespace MetricsManager.DataBase
         private void AddAgent(IDbConnection connection, AgentInfo agent)
         {
             connection.Execute(
-                "INSERT INTO agents(uri,isenabled) VALUES (@uri,@isenabled);",
+                $"INSERT INTO {Values.AgentsMetricsTable}(uri,isenabled) VALUES (@uri,@isenabled);",
                 new
                 {
                     uri = agent.Uri,
@@ -151,7 +152,7 @@ namespace MetricsManager.DataBase
         private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {
             connection.Execute(
-                "INSERT INTO cpumetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                $"INSERT INTO {Values.CpuMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
                 new
                 {
                     agentId = metric.AgentId,
@@ -163,7 +164,7 @@ namespace MetricsManager.DataBase
         private void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
         {
             connection.Execute(
-                "INSERT INTO dotnetmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                $"INSERT INTO {Values.DotnetMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
                 new
                 {
                     agentId = metric.AgentId,
@@ -175,7 +176,7 @@ namespace MetricsManager.DataBase
         private void AddHddEntry(IDbConnection connection, HddMetric metric)
         {
             connection.Execute(
-                "INSERT INTO hddmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                $"INSERT INTO {Values.HddMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
                 new
                 {
                     agentId = metric.AgentId,
@@ -187,7 +188,7 @@ namespace MetricsManager.DataBase
         private void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
         {
             connection.Execute(
-                "INSERT INTO networkmetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                $"INSERT INTO {Values.NetworkMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
                 new
                 {
                     agentId = metric.AgentId,
@@ -199,7 +200,7 @@ namespace MetricsManager.DataBase
         private void AddRamEntry(IDbConnection connection, RamMetric metric)
         {
             connection.Execute(
-                "INSERT INTO rammetrics(agentId,time,value) VALUES (@agentId,@time,@value);",
+                $"INSERT INTO {Values.RamMetricsTable}(agentId,time,value) VALUES (@agentId,@time,@value);",
                 new
                 {
                     agentId = metric.AgentId,

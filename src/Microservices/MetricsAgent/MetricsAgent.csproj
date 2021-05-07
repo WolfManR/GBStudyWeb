@@ -22,8 +22,4 @@
       <ProjectReference Include="..\..\Libraries\Common\Common.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DataBase\Migrations\" />
-    </ItemGroup>
-
 </Project>

@@ -8,7 +8,7 @@ using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase
 {
-    public class SqLiteInitializer
+    public class SQLiteInitializer
     {
         private readonly SQLiteContainer _container;
         private readonly IMigrationRunner _migrationRunner;
@@ -45,7 +45,7 @@ namespace MetricsAgent.DataBase
         });
 
 
-        public SqLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
+        public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
             _migrationRunner = migrationRunner;

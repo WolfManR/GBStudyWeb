@@ -2,13 +2,15 @@ using System.Data;
 using Bogus;
 using Common.Configuration;
 using Dapper;
+using FluentMigrator.Runner;
 using MetricsManager.DataBase.Models;
 
 namespace MetricsManager.DataBase
 {
-    public class SqLiteInitializer
+    public class SQLiteInitializer
     {
         private readonly SQLiteContainer _container;
+        private readonly IMigrationRunner _migrationRunner;
         private const int AgentsCount = 4;
 
         private readonly Faker<AgentInfo> _agentsGenerator = new Faker<AgentInfo>().CustomInstantiator(f => new()
@@ -54,88 +56,55 @@ namespace MetricsManager.DataBase
         });
 
 
-        public SqLiteInitializer(SQLiteContainer container)
+        public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
+            _migrationRunner = migrationRunner;
         }
 
 
         public void Init()
         {
+            _migrationRunner.MigrateUp();
+
             using var connection = _container.CreateConnection();
 
             // AGENTS
-            RecreateTable(
-                connection,
-                Values.AgentsMetricsTable,
-                "id INTEGER PRIMARY KEY, uri text, isenabled INT NOT NULL"
-            );
-            foreach (var agent in _agentsGenerator.Generate(AgentsCount))
-            {
-                AddAgent(connection, agent);
-            }
+            if (IsTableNotFilled(connection, Values.CpuMetricsTable))
+                foreach (var agent in _agentsGenerator.Generate(AgentsCount))
+                    AddAgent(connection, agent);
 
             // CPU
-            RecreateTable(
-                connection,
-                Values.CpuMetricsTable,
-                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
-            );
-            foreach (var cpu in _cpuMetricsGenerator.Generate(10))
-            {
-                AddCpuEntry(connection, cpu);
-            }
+            if (IsTableNotFilled(connection, Values.CpuMetricsTable))
+                foreach (var cpu in _cpuMetricsGenerator.Generate(10))
+                    AddCpuEntry(connection, cpu);
 
             // DOTNET
-            RecreateTable(
-                connection,
-                Values.DotnetMetricsTable,
-                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
-            );
-            foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
-            {
-                AddDotnetEntry(connection, dotnet);
-            }
+            if (IsTableNotFilled(connection, Values.DotnetMetricsTable))
+                foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
+                    AddDotnetEntry(connection, dotnet);
 
             // HDD
-            RecreateTable(
-                connection,
-                Values.HddMetricsTable,
-                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
-            );
-            foreach (var hdd in _hddMetricsGenerator.Generate(10))
-            {
-                AddHddEntry(connection, hdd);
-            }
+            if (IsTableNotFilled(connection, Values.HddMetricsTable))
+                foreach (var hdd in _hddMetricsGenerator.Generate(10))
+                    AddHddEntry(connection, hdd);
 
             // NETWORK
-            RecreateTable(
-                connection,
-                Values.NetworkMetricsTable,
-                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
-            );
-            foreach (var network in _networkMetricsGenerator.Generate(10))
-            {
-                AddNetworkEntry(connection, network);
-            }
+            if (IsTableNotFilled(connection, Values.NetworkMetricsTable))
+                foreach (var network in _networkMetricsGenerator.Generate(10))
+                    AddNetworkEntry(connection, network);
 
             //RAM
-            RecreateTable(
-                connection,
-                Values.RamMetricsTable,
-                "id INTEGER PRIMARY KEY, agentId INT NOT NULL, time INT, value INT"
-            );
-            foreach (var ram in _ramMetricsGenerator.Generate(10))
-            {
-                AddRamEntry(connection, ram);
-            }
+            if (IsTableNotFilled(connection, Values.RamMetricsTable))
+                foreach (var ram in _ramMetricsGenerator.Generate(10))
+                    AddRamEntry(connection, ram);
         }
 
 
-        private static void RecreateTable(IDbConnection connection, string tableName, string tableEntrySchema)
+        private static bool IsTableNotFilled(IDbConnection connection, string tableName)
         {
-            connection.Execute($"DROP TABLE IF EXISTS {tableName}");
-            connection.Execute($"CREATE TABLE {tableName}({tableEntrySchema})");
+            var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");
+            return count <= 0;
         }
 
         private static void AddAgent(IDbConnection connection, AgentInfo agent)

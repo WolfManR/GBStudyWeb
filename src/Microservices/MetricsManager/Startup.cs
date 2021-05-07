@@ -1,3 +1,5 @@
+using FluentMigrator.Runner;
+
 using MetricsManager.DataBase;
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Repositories;
@@ -11,6 +13,9 @@ namespace MetricsManager
 {
     public class Startup
     {
+        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -18,10 +23,17 @@ namespace MetricsManager
 
             services.AddServices();
 
+            services.AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    .AddSQLite()
+                    .WithGlobalConnectionString(ConnectionString)
+                    .ScanIn(typeof(Startup).Assembly).For.Migrations())
+                .AddLogging(logging => logging.AddFluentMigratorConsole());
+
             services.AddAutoMapper(typeof(MapperProfile));
             services
-                .AddSingleton<SQLiteContainer>()
-                .AddSingleton<SqLiteInitializer>()
+                .AddSingleton(new SQLiteContainer(ConnectionString))
+                .AddTransient<SQLiteInitializer>()
                 ;
             services
                 .AddSingleton<IAgentsRepository, AgentsRepository>()
@@ -33,7 +45,7 @@ namespace MetricsManager
                 ;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SqLiteInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
         {
             if (env.IsDevelopment())
             {

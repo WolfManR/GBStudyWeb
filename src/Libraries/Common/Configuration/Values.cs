@@ -8,5 +8,7 @@
         public const string NetworkMetricsTable = "networkmetrics";
         public const string RamMetricsTable = "rammetrics";
         public const string AgentsMetricsTable = "agents";
+
+        public const int LongestUrlLength = 2048;
     }
 }

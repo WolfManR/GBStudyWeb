@@ -1,3 +1,4 @@
+using FluentMigrator.Runner;
 using MetricsAgent.DataBase;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Repositories;
@@ -11,6 +12,9 @@ namespace MetricsAgent
 {
     public class Startup
     {
+        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,10 +28,17 @@ namespace MetricsAgent
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"}));
 
+            services.AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    .AddSQLite()
+                    .WithGlobalConnectionString(ConnectionString)
+                    .ScanIn(typeof(Startup).Assembly).For.Migrations())
+                .AddLogging(logging => logging.AddFluentMigratorConsole());
+
             services.AddAutoMapper(typeof(MapperProfile));
             services
-                .AddSingleton<SQLiteContainer>()
-                .AddSingleton<SQLiteInitializer>()
+                .AddSingleton(new SQLiteContainer(ConnectionString))
+                .AddTransient<SQLiteInitializer>()
                 ;
             services
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()

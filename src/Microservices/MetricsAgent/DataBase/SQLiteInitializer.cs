@@ -1,7 +1,9 @@
+using System;
 using System.Data;
 using Bogus;
 using Common.Configuration;
 using Dapper;
+using FluentMigrator.Runner;
 using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase
@@ -9,6 +11,7 @@ namespace MetricsAgent.DataBase
     public class SQLiteInitializer
     {
         private readonly SQLiteContainer _container;
+        private readonly IMigrationRunner _migrationRunner;
 
 
         private Faker<CpuMetric> cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
@@ -42,49 +45,51 @@ namespace MetricsAgent.DataBase
         });
 
 
-        public SQLiteInitializer(SQLiteContainer container)
+        public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
+            _migrationRunner = migrationRunner;
         }
 
 
         public void Init()
         {
+            _migrationRunner.MigrateUp();
+
+
             using var connection = _container.CreateConnection();
 
             // CPU
-            RecreateTable(connection, Values.CpuMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
-            foreach (var cpu in cpuMetricsGenerator.Generate(10))
-                AddCpuEntry(connection, cpu);
+            if (IsTableNotFilled(connection, Values.CpuMetricsTable))
+                foreach (var cpu in cpuMetricsGenerator.Generate(10))
+                    AddCpuEntry(connection, cpu);
 
             // DOTNET
-            RecreateTable(connection, Values.DotnetMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
-            foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
-                AddDotnetEntry(connection, dotnet);
+            if (IsTableNotFilled(connection, Values.DotnetMetricsTable))
+                foreach (var dotnet in dotnetMetricsGenerator.Generate(10))
+                    AddDotnetEntry(connection, dotnet);
 
             // HDD
-            RecreateTable(connection, Values.HddMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
-            foreach (var hdd in hddMetricsGenerator.Generate(10))
-                AddHddEntry(connection, hdd);
+            if (IsTableNotFilled(connection, Values.HddMetricsTable))
+                foreach (var hdd in hddMetricsGenerator.Generate(10))
+                    AddHddEntry(connection, hdd);
 
             // NETWORK
-            RecreateTable(connection, Values.NetworkMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
-            foreach (var network in networkMetricsGenerator.Generate(10))
-                AddNetworkEntry(connection, network);
+            if (IsTableNotFilled(connection, Values.NetworkMetricsTable))
+                foreach (var network in networkMetricsGenerator.Generate(10))
+                    AddNetworkEntry(connection, network);
 
             //RAM
-            RecreateTable(connection, Values.RamMetricsTable, "id INTEGER PRIMARY KEY, value INT, time INT");
-            foreach (var ram in ramMetricsGenerator.Generate(10))
-                AddRamEntry(connection, ram);
+            if (IsTableNotFilled(connection, Values.RamMetricsTable))
+                foreach (var ram in ramMetricsGenerator.Generate(10))
+                    AddRamEntry(connection, ram);
         }
 
-
-        private void RecreateTable(IDbConnection connection, string tableName, string tableEntrySchema)
+        private bool IsTableNotFilled(IDbConnection connection, string tableName)
         {
-            connection.Execute($"DROP TABLE IF EXISTS {tableName}");
-            connection.Execute($"CREATE TABLE {tableName}({tableEntrySchema})");
+            var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");
+            return count <= 0;
         }
-
 
         private void AddCpuEntry(IDbConnection connection, CpuMetric metric)
         {

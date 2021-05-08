@@ -2,11 +2,16 @@ using FluentMigrator.Runner;
 using MetricsAgent.DataBase;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Repositories;
+using MetricsAgent.Jobs;
+using MetricsAgent.Jobs.MetricsJobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 
 namespace MetricsAgent
 {
@@ -46,6 +51,14 @@ namespace MetricsAgent
                 .AddSingleton<IHddMetricsRepository, HddMetricsRepository>()
                 .AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>()
                 .AddSingleton<IRamMetricsRepository, RamMetricsRepository>()
+                ;
+
+            services
+                .AddSingleton<IJobFactory,JobFactory>()
+                .AddSingleton<ISchedulerFactory, StdSchedulerFactory>()
+                .AddSingleton<CpuMetricJob>()
+                .AddSingleton(new JobSchedule(typeof(CpuMetricJob),"0/5 * * * * ?"))
+                .AddHostedService<QuartzHostedService>()
                 ;
         }
 

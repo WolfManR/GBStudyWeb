@@ -54,35 +54,36 @@ namespace MetricsAgent.DataBase
 
         public void Init()
         {
+
             _migrationRunner.MigrateUp();
 
 
-            using var connection = _container.CreateConnection();
+            //using var connection = _container.CreateConnection();
 
-            // CPU
-            if (IsTableNotFilled(connection, Values.CpuMetricsTable))
-                foreach (var cpu in _cpuMetricsGenerator.Generate(10))
-                    AddCpuEntry(connection, cpu);
+            //// CPU
+            //if (IsTableNotFilled(connection, Values.CpuMetricsTable))
+            //    foreach (var cpu in _cpuMetricsGenerator.Generate(10))
+            //        AddCpuEntry(connection, cpu);
 
-            // DOTNET
-            if (IsTableNotFilled(connection, Values.DotnetMetricsTable))
-                foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
-                    AddDotnetEntry(connection, dotnet);
+            //// DOTNET
+            //if (IsTableNotFilled(connection, Values.DotnetMetricsTable))
+            //    foreach (var dotnet in _dotnetMetricsGenerator.Generate(10))
+            //        AddDotnetEntry(connection, dotnet);
 
-            // HDD
-            if (IsTableNotFilled(connection, Values.HddMetricsTable))
-                foreach (var hdd in _hddMetricsGenerator.Generate(10))
-                    AddHddEntry(connection, hdd);
+            //// HDD
+            //if (IsTableNotFilled(connection, Values.HddMetricsTable))
+            //    foreach (var hdd in _hddMetricsGenerator.Generate(10))
+            //        AddHddEntry(connection, hdd);
 
-            // NETWORK
-            if (IsTableNotFilled(connection, Values.NetworkMetricsTable))
-                foreach (var network in _networkMetricsGenerator.Generate(10))
-                    AddNetworkEntry(connection, network);
+            //// NETWORK
+            //if (IsTableNotFilled(connection, Values.NetworkMetricsTable))
+            //    foreach (var network in _networkMetricsGenerator.Generate(10))
+            //        AddNetworkEntry(connection, network);
 
-            //RAM
-            if (IsTableNotFilled(connection, Values.RamMetricsTable))
-                foreach (var ram in _ramMetricsGenerator.Generate(10))
-                    AddRamEntry(connection, ram);
+            ////RAM
+            //if (IsTableNotFilled(connection, Values.RamMetricsTable))
+            //    foreach (var ram in _ramMetricsGenerator.Generate(10))
+            //        AddRamEntry(connection, ram);
         }
 
         private static bool IsTableNotFilled(IDbConnection connection, string tableName)

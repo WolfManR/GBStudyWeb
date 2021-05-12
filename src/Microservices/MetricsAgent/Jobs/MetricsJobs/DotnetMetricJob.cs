@@ -6,22 +6,22 @@ using Quartz;
 
 namespace MetricsAgent.Jobs.MetricsJobs
 {
-    public class CpuMetricJob : IJob
+    public class DotnetMetricJob : IJob
     {
-        private readonly ICpuMetricsRepository _repository;
+        private readonly IDotnetMetricsRepository _repository;
         private PerformanceCounter _counter;
 
-        public CpuMetricJob(ICpuMetricsRepository repository)
+        public DotnetMetricJob(IDotnetMetricsRepository repository)
         {
             _repository = repository;
-            _counter = new("Processor", "% Processor Time", "_Total");
+            _counter = new(".NET CLR Exceptions", "# of Exceps Thrown", "_Global_");
         }
 
         public Task Execute(IJobExecutionContext context)
         {
-            var cpuMetric = Convert.ToInt32(_counter.NextValue());
+            var dotnetMetric = Convert.ToInt32(_counter.NextValue());
             var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            _repository.Create(new(){Time = time, Value = cpuMetric });
+            _repository.Create(new() { Time = time, Value = dotnetMetric });
             return Task.CompletedTask;
         }
     }

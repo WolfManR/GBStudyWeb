@@ -43,8 +43,8 @@ namespace MetricsAgent
             services.AddAutoMapper(typeof(MapperProfile));
             services
                 .AddSingleton(new SQLiteContainer(ConnectionString))
-                .AddTransient<SQLiteInitializer>()
-                ;
+                .AddTransient<SQLiteInitializer>();
+
             services
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
                 .AddSingleton<IDotnetMetricsRepository, DotnetMetricsRepository>()
@@ -54,11 +54,15 @@ namespace MetricsAgent
                 ;
 
             services
-                .AddSingleton<IJobFactory,JobFactory>()
+                .AddSingleton<IJobFactory, JobFactory>()
                 .AddSingleton<ISchedulerFactory, StdSchedulerFactory>()
-                .AddSingleton<CpuMetricJob>()
-                .AddSingleton(new JobSchedule(typeof(CpuMetricJob),"0/5 * * * * ?"))
-                .AddHostedService<QuartzHostedService>()
+                .AddHostedService<QuartzHostedService>();
+            services
+                .AddJob<CpuMetricJob>("0/5 * * * * ?")
+                .AddJob<DotnetMetricJob>("0/5 * * * * ?")
+                .AddJob<HddMetricJob>("0/5 * * * * ?")
+                .AddJob<NetworkMetricJob>("0/5 * * * * ?")
+                .AddJob<RamMetricJob>("0/5 * * * * ?")
                 ;
         }
 

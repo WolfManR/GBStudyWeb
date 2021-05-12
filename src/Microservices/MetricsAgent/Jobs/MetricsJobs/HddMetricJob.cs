@@ -6,22 +6,22 @@ using Quartz;
 
 namespace MetricsAgent.Jobs.MetricsJobs
 {
-    public class CpuMetricJob : IJob
+    public class HddMetricJob : IJob
     {
-        private readonly ICpuMetricsRepository _repository;
+        private readonly IHddMetricsRepository _repository;
         private PerformanceCounter _counter;
 
-        public CpuMetricJob(ICpuMetricsRepository repository)
+        public HddMetricJob(IHddMetricsRepository repository)
         {
             _repository = repository;
-            _counter = new("Processor", "% Processor Time", "_Total");
+            _counter = new("LogicalDisk", "Free Megabytes", "_Total");
         }
 
         public Task Execute(IJobExecutionContext context)
         {
-            var cpuMetric = Convert.ToInt32(_counter.NextValue());
+            var hddMetric = Convert.ToInt32(_counter.NextValue());
             var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            _repository.Create(new(){Time = time, Value = cpuMetric });
+            _repository.Create(new() { Time = time, Value = hddMetric });
             return Task.CompletedTask;
         }
     }

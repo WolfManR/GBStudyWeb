@@ -14,15 +14,13 @@ namespace MetricsManager.Controllers
     {
         private readonly IAgentsRepository _repository;
         private readonly ILogger<AgentsController> _logger;
-
         
         public AgentsController(IAgentsRepository repository, ILogger<AgentsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-
-
+        
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] RegisterAgentRequest request)
         {

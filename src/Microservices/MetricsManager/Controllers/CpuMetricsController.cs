@@ -13,14 +13,12 @@ namespace MetricsManager.Controllers
     {
         private readonly ICpuMetricsRepository _repository;
         private readonly ILogger<CpuMetricsController> _logger;
-
         
         public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
         
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] CpuMetricsFromAgentRequest request)

@@ -54,15 +54,13 @@ namespace MetricsManager.DataBase
             Value = f.Random.Int(),
             Time = f.Date.RecentOffset(32).ToUnixTimeSeconds(),
         });
-
-
+        
         public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
             _migrationRunner = migrationRunner;
         }
-
-
+        
         public void Init()
         {
             _migrationRunner.MigrateUp();
@@ -99,8 +97,7 @@ namespace MetricsManager.DataBase
                 foreach (var ram in _ramMetricsGenerator.Generate(10))
                     AddRamEntry(connection, ram);
         }
-
-
+        
         private static bool IsTableNotFilled(IDbConnection connection, string tableName)
         {
             var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");

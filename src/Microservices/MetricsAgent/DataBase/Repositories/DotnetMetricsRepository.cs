@@ -11,11 +11,9 @@ namespace MetricsAgent.DataBase.Repositories
         public DotnetMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
+        
         /// <inheritdoc />
         protected override string TableName { get; } = Values.DotnetMetricsTable;
-
         
         /// <inheritdoc />
         public override void Create(DotnetMetric entity)

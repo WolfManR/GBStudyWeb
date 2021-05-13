@@ -14,8 +14,7 @@ namespace MetricsManager
     public class Startup
     {
         private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();

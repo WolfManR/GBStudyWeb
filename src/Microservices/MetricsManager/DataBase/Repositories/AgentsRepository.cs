@@ -17,8 +17,7 @@ namespace MetricsManager.DataBase.Repositories
         {
             _container = container;
         }
-
-
+        
         /// <inheritdoc />
         public void Create(AgentInfo agent)
         {

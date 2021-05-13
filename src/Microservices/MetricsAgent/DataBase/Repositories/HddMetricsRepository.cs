@@ -11,11 +11,9 @@ namespace MetricsAgent.DataBase.Repositories
         public HddMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
+        
         /// <inheritdoc />
         protected override string TableName { get; } = Values.HddMetricsTable;
-
         
         /// <inheritdoc />
         public override void Create(HddMetric entity)

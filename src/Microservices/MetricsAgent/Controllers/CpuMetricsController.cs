@@ -20,7 +20,6 @@ namespace MetricsAgent.Controllers
             _logger = logger;
         }
         
-        
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetByTimePeriod([FromRoute] CpuMetricsRequest request)
         {

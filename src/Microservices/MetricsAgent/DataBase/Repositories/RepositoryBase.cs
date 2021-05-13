@@ -11,13 +11,11 @@ namespace MetricsAgent.DataBase.Repositories
     {
         protected abstract string TableName { get; }
         protected readonly SQLiteContainer Container;
-
-
+        
         protected RepositoryBase(SQLiteContainer container)
         {
             Container = container;
         }
-        
         
         /// <inheritdoc />
         public virtual IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)

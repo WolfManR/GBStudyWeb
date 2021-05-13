@@ -13,14 +13,12 @@ namespace MetricsManager.Controllers
     {
         private readonly IRamMetricsRepository _repository;
         private readonly ILogger<RamMetricsController> _logger;
-
         
         public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
         
         [HttpGet("available/agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] RamMetricsFromAgentRequest request)

@@ -21,7 +21,6 @@ namespace MetricsManagerTests
             _controller = new(_repoMock.Object,loggerMock.Object);
         }
         
-        
         [Fact]
         public void GetLeftSpaceOnHddFromAgent_ReturnsOk()
         {

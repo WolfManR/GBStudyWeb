@@ -13,14 +13,12 @@ namespace MetricsManager.Controllers
     {
         private readonly INetworkMetricsRepository _repository;
         private readonly ILogger<NetworkMetricsController> _logger;
-
         
         public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
         
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] NetworkMetricsFromAgentRequest request)

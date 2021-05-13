@@ -11,11 +11,9 @@ namespace MetricsAgent.DataBase.Repositories
         public RamMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
+        
         /// <inheritdoc />
         protected override string TableName { get; } = Values.RamMetricsTable;
-
         
         /// <inheritdoc />
         public override void Create(RamMetric entity)

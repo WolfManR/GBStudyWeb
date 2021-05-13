@@ -13,14 +13,12 @@ namespace MetricsManager.Controllers
     {
         private readonly IDotnetMetricsRepository _repository;
         private readonly ILogger<DotnetMetricsController> _logger;
-
         
         public DotnetMetricsController(IDotnetMetricsRepository repository, ILogger<DotnetMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
         
         [HttpGet("errors-count/agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] ErrorsCountFromAgentRequest request)

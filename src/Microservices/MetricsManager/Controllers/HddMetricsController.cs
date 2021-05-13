@@ -13,14 +13,12 @@ namespace MetricsManager.Controllers
     {
         private readonly IHddMetricsRepository _repository;
         private readonly ILogger<HddMetricsController> _logger;
-
         
         public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
         
         [HttpGet("left/agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] HddMetricsFromAgentRequest request)

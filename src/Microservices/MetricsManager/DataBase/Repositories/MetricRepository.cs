@@ -9,16 +9,13 @@ namespace MetricsManager.DataBase.Repositories
     public abstract class MetricRepository<TEntity,TId, TAgentId> : IRepository<TEntity,TId, TAgentId> where TEntity : IMetricEntity<TId, TAgentId>
     {
         protected readonly SQLiteContainer Container;
-
         
         protected MetricRepository(SQLiteContainer container)
         {
             Container = container;
         }
-
         
         protected abstract string TableName { get; }
-        
         
         /// <inheritdoc />
         public IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)

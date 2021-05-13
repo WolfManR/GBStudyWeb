@@ -11,11 +11,9 @@ namespace MetricsAgent.DataBase.Repositories
         public NetworkMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
+        
         /// <inheritdoc />
         protected override string TableName { get; } = Values.NetworkMetricsTable;
-
         
         /// <inheritdoc />
         public override void Create(NetworkMetric entity)

@@ -14,14 +14,12 @@ namespace MetricsAgentTests
         private readonly RamMetricsController _controller;
         private readonly Mock<IRamMetricsRepository> _repoMock;
         
-        
         public RamControllerUnitTests()
         {
             _repoMock = new();
             Mock<ILogger<RamMetricsController>> loggerMock = new();
             _controller = new(_repoMock.Object,loggerMock.Object);
         }
-        
         
         [Fact]
         public void GetAvailableSpaceInfo_ReturnsOk()
@@ -37,7 +35,6 @@ namespace MetricsAgentTests
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-        
         
         [Fact]
         public void GetFreeHardDriveSpace_VerifyRequestToRepository()

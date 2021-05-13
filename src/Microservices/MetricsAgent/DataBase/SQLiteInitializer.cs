@@ -1,10 +1,4 @@
-using System;
-using System.Data;
-using Bogus;
-using Common.Configuration;
-using Dapper;
 using FluentMigrator.Runner;
-using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase
 {
@@ -13,8 +7,7 @@ namespace MetricsAgent.DataBase
     {
         private readonly SQLiteContainer _container;
         private readonly IMigrationRunner _migrationRunner;
-
-
+        
         //private readonly Faker<CpuMetric> _cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
         //{
         //    m.Value = f.Random.Int();
@@ -44,21 +37,17 @@ namespace MetricsAgent.DataBase
         //    m.Value = f.Random.Int();
         //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
         //});
-
-
+        
         public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
         {
             _container = container;
             _migrationRunner = migrationRunner;
         }
-
-
+        
         public void Init()
         {
-
             _migrationRunner.MigrateUp();
-
-
+            
             //using var connection = _container.CreateConnection();
 
             //// CPU

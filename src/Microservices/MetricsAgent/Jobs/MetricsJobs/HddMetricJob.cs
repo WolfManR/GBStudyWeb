@@ -9,7 +9,7 @@ namespace MetricsAgent.Jobs.MetricsJobs
     public class HddMetricJob : IJob
     {
         private readonly IHddMetricsRepository _repository;
-        private PerformanceCounter _counter;
+        private readonly PerformanceCounter _counter;
 
         public HddMetricJob(IHddMetricsRepository repository)
         {

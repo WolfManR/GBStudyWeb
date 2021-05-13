@@ -9,7 +9,7 @@ namespace MetricsAgent.Jobs.MetricsJobs
     public class NetworkMetricJob : IJob
     {
         private readonly INetworkMetricsRepository _repository;
-        private PerformanceCounter _counter;
+        private readonly PerformanceCounter _counter;
 
         public NetworkMetricJob(INetworkMetricsRepository repository)
         {

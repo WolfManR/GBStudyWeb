@@ -34,6 +34,8 @@ namespace MetricsAgent.Jobs
 
                 await Scheduler.ScheduleJob(job, trigger, cancellationToken);
             }
+
+            await Scheduler.Start(cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
@@ -63,6 +65,5 @@ namespace MetricsAgent.Jobs
                 .WithDescription(schedule.CronExpression)
                 .Build();
         }
-
     }
 }

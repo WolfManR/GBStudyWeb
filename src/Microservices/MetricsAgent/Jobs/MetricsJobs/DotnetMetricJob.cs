@@ -9,7 +9,7 @@ namespace MetricsAgent.Jobs.MetricsJobs
     public class DotnetMetricJob : IJob
     {
         private readonly IDotnetMetricsRepository _repository;
-        private PerformanceCounter _counter;
+        private readonly PerformanceCounter _counter;
 
         public DotnetMetricJob(IDotnetMetricsRepository repository)
         {

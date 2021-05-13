@@ -8,41 +8,42 @@ using MetricsAgent.DataBase.Models;
 
 namespace MetricsAgent.DataBase
 {
+    // TODO: Remove commented code in next version
     public class SQLiteInitializer
     {
         private readonly SQLiteContainer _container;
         private readonly IMigrationRunner _migrationRunner;
 
 
-        private readonly Faker<CpuMetric> _cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
-        {
-            m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
-        });
+        //private readonly Faker<CpuMetric> _cpuMetricsGenerator = new Faker<CpuMetric>().Rules((f, m) =>
+        //{
+        //    m.Value = f.Random.Int();
+        //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
+        //});
 
-        private readonly Faker<DotnetMetric> _dotnetMetricsGenerator = new Faker<DotnetMetric>().Rules((f, m) =>
-        {
-            m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
-        });
+        //private readonly Faker<DotnetMetric> _dotnetMetricsGenerator = new Faker<DotnetMetric>().Rules((f, m) =>
+        //{
+        //    m.Value = f.Random.Int();
+        //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
+        //});
 
-        private readonly Faker<HddMetric> _hddMetricsGenerator = new Faker<HddMetric>().Rules((f, m) =>
-        {
-            m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
-        });
+        //private readonly Faker<HddMetric> _hddMetricsGenerator = new Faker<HddMetric>().Rules((f, m) =>
+        //{
+        //    m.Value = f.Random.Int();
+        //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
+        //});
 
-        private readonly Faker<NetworkMetric> _networkMetricsGenerator = new Faker<NetworkMetric>().Rules((f, m) =>
-        {
-            m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
-        });
+        //private readonly Faker<NetworkMetric> _networkMetricsGenerator = new Faker<NetworkMetric>().Rules((f, m) =>
+        //{
+        //    m.Value = f.Random.Int();
+        //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
+        //});
 
-        private readonly Faker<RamMetric> _ramMetricsGenerator = new Faker<RamMetric>().Rules((f, m) =>
-        {
-            m.Value = f.Random.Int();
-            m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
-        });
+        //private readonly Faker<RamMetric> _ramMetricsGenerator = new Faker<RamMetric>().Rules((f, m) =>
+        //{
+        //    m.Value = f.Random.Int();
+        //    m.Time = f.Date.RecentOffset(32).ToUnixTimeSeconds();
+        //});
 
 
         public SQLiteInitializer(SQLiteContainer container, IMigrationRunner migrationRunner)
@@ -86,65 +87,65 @@ namespace MetricsAgent.DataBase
             //        AddRamEntry(connection, ram);
         }
 
-        private static bool IsTableNotFilled(IDbConnection connection, string tableName)
-        {
-            var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");
-            return count <= 0;
-        }
+        //private static bool IsTableNotFilled(IDbConnection connection, string tableName)
+        //{
+        //    var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {tableName};");
+        //    return count <= 0;
+        //}
 
-        private static void AddCpuEntry(IDbConnection connection, CpuMetric metric)
-        {
-            connection.Execute(
-                $"INSERT INTO {Values.CpuMetricsTable}(value,time) VALUES (@value,@time);",
-                new
-                {
-                    value = metric.Value,
-                    time = metric.Time
-                });
-        }
+        //private static void AddCpuEntry(IDbConnection connection, CpuMetric metric)
+        //{
+        //    connection.Execute(
+        //        $"INSERT INTO {Values.CpuMetricsTable}(value,time) VALUES (@value,@time);",
+        //        new
+        //        {
+        //            value = metric.Value,
+        //            time = metric.Time
+        //        });
+        //}
 
-        private static void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
-        {
-            connection.Execute(
-                $"INSERT INTO {Values.DotnetMetricsTable}(value,time) VALUES (@value,@time);",
-                new
-                {
-                    value = metric.Value,
-                    time = metric.Time
-                });
-        }
+        //private static void AddDotnetEntry(IDbConnection connection, DotnetMetric metric)
+        //{
+        //    connection.Execute(
+        //        $"INSERT INTO {Values.DotnetMetricsTable}(value,time) VALUES (@value,@time);",
+        //        new
+        //        {
+        //            value = metric.Value,
+        //            time = metric.Time
+        //        });
+        //}
 
-        private static void AddHddEntry(IDbConnection connection, HddMetric metric)
-        {
-            connection.Execute(
-                $"INSERT INTO {Values.HddMetricsTable}(value,time) VALUES (@value,@time);",
-                new
-                {
-                    value = metric.Value,
-                    time = metric.Time
-                });
-        }
+        //private static void AddHddEntry(IDbConnection connection, HddMetric metric)
+        //{
+        //    connection.Execute(
+        //        $"INSERT INTO {Values.HddMetricsTable}(value,time) VALUES (@value,@time);",
+        //        new
+        //        {
+        //            value = metric.Value,
+        //            time = metric.Time
+        //        });
+        //}
 
-        private static void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
-        {
-            connection.Execute(
-                $"INSERT INTO {Values.NetworkMetricsTable}(value,time) VALUES (@value,@time);",
-                new
-                {
-                    value = metric.Value,
-                    time = metric.Time
-                });
-        }
+        //private static void AddNetworkEntry(IDbConnection connection, NetworkMetric metric)
+        //{
+        //    connection.Execute(
+        //        $"INSERT INTO {Values.NetworkMetricsTable}(value,time) VALUES (@value,@time);",
+        //        new
+        //        {
+        //            value = metric.Value,
+        //            time = metric.Time
+        //        });
+        //}
 
-        private static void AddRamEntry(IDbConnection connection, RamMetric metric)
-        {
-            connection.Execute(
-                $"INSERT INTO {Values.RamMetricsTable}(value,time) VALUES (@value,@time);",
-                new
-                {
-                    value = metric.Value,
-                    time = metric.Time
-                });
-        }
+        //private static void AddRamEntry(IDbConnection connection, RamMetric metric)
+        //{
+        //    connection.Execute(
+        //        $"INSERT INTO {Values.RamMetricsTable}(value,time) VALUES (@value,@time);",
+        //        new
+        //        {
+        //            value = metric.Value,
+        //            time = metric.Time
+        //        });
+        //}
     }
 }

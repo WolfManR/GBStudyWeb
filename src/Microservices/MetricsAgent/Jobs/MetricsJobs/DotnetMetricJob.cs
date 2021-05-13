@@ -6,6 +6,7 @@ using Quartz;
 
 namespace MetricsAgent.Jobs.MetricsJobs
 {
+    [DisallowConcurrentExecution]
     public class DotnetMetricJob : IJob
     {
         private readonly IDotnetMetricsRepository _repository;

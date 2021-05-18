@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
 using MetricsManager.Services.Client;
@@ -19,7 +17,6 @@ namespace MetricsManager.Jobs.MetricsJobs
         private readonly ICpuMetricsRepository _metricsRepository;
         private readonly IMetricsClient _client;
         private readonly IAgentsRepository _agentsRepository;
-        private readonly IMapper _mapper;
 
         public CpuMetricJob(ICpuMetricsRepository metricsRepository, IMetricsClient client, IAgentsRepository agentsRepository)
         {

@@ -20,7 +20,7 @@ namespace MetricsAgent.Controllers
             _logger = logger;
         }
         
-        [HttpGet("available/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetByTimePeriod([FromRoute] AvailableSpaceInfoRequest request)
         {
             _logger.LogInformation(

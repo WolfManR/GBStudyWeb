@@ -20,7 +20,7 @@ namespace MetricsAgent.Controllers
             _logger = logger;
         }
         
-        [HttpGet("errors-count/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetByTimePeriod([FromRoute] ErrorsCountRequest request)
         {
             _logger.LogInformation(

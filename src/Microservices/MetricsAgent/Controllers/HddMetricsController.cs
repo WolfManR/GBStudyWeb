@@ -20,7 +20,7 @@ namespace MetricsAgent.Controllers
             _logger = logger;
         }
         
-        [HttpGet("left/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetByTimePeriod([FromRoute] FreeHardDriveSpaceRequest request)
         {
             _logger.LogInformation(

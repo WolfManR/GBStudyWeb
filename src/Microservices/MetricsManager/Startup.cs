@@ -58,10 +58,10 @@ namespace MetricsManager
                 .AddHostedService<QuartzHostedService>();
             services
                 .AddJob<CpuMetricJob>("0/5 * * * * ?")
-                //.AddJob<DotnetMetricJob>("0/5 * * * * ?")
-                //.AddJob<HddMetricJob>("0/5 * * * * ?")
-                //.AddJob<NetworkMetricJob>("0/5 * * * * ?")
-                //.AddJob<RamMetricJob>("0/5 * * * * ?")
+                .AddJob<DotnetMetricJob>("0/5 * * * * ?")
+                .AddJob<HddMetricJob>("0/5 * * * * ?")
+                .AddJob<NetworkMetricJob>("0/5 * * * * ?")
+                .AddJob<RamMetricJob>("0/5 * * * * ?")
                 ;
         }
 

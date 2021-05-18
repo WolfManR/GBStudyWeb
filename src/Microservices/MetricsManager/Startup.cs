@@ -6,6 +6,7 @@ using MetricsManager.DataBase.Repositories;
 using MetricsManager.Jobs;
 using MetricsManager.Jobs.MetricsJobs;
 using MetricsManager.Services;
+using MetricsManager.Services.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,8 @@ namespace MetricsManager
                 .AddSingleton<IRamMetricsRepository, RamMetricsRepository>()
                 ;
 
+            services.AddHttpClient<IMetricsClient, MetricsClient>();
+
             services
                 .AddSingleton<IJobFactory, JobFactory>()
                 .AddSingleton<ISchedulerFactory, StdSchedulerFactory>()
@@ -64,13 +67,14 @@ namespace MetricsManager
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
         {
+            initializer.Init();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","Metrics manager api v1"));
             }
 
-            initializer.Init();
             
             app.UseRouting();
 

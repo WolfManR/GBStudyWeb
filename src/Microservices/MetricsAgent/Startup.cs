@@ -68,6 +68,8 @@ namespace MetricsAgent
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
         {
+            initializer.Init();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,9 +77,6 @@ namespace MetricsAgent
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetricsAgent v1"));
             }
 
-            initializer.Init();
-            
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -42,26 +42,5 @@ namespace MetricsManager.DataBase.Repositories
                 };
             }
         }
-
-        public DateTimeOffset GetAgentLastMetricDate(int agentId)
-        {
-            using var connection = Container.CreateConnection();
-            var result = connection.ExecuteScalar<long>(
-                $"select Max(time) from {TableName} where agentId = @agentId",
-                new{agentId});
-
-            if (result >= 0)
-            {
-                return DateTimeOffset.FromUnixTimeSeconds(result);
-            }
-
-            throw new InvalidOperationException("Failure to get last metric date")
-            {
-                Data =
-                {
-                    ["agentId"] = agentId
-                }
-            };
-        }
     }
 }

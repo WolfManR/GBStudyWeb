@@ -1,3 +1,4 @@
+using System;
 using FluentMigrator.Runner;
 
 using MetricsManager.DataBase;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Polly;
 using Quartz.Impl;
 using Quartz.Spi;
 using Quartz;
@@ -48,7 +49,8 @@ namespace MetricsManager
                 .AddSingleton<IRamMetricsRepository, RamMetricsRepository>()
                 ;
 
-            services.AddHttpClient<IMetricsClient, MetricsClient>();
+            services.AddHttpClient<IMetricsClient, MetricsClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(4, i => TimeSpan.FromMilliseconds(1000*i)));
 
             services
                 .AddSingleton<IJobFactory, JobFactory>()

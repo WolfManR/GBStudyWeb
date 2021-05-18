@@ -40,9 +40,7 @@ namespace MetricsAgent
                 .AddLogging(logging => logging.AddFluentMigratorConsole());
 
             services.AddAutoMapper(typeof(MapperProfile));
-            services
-                .AddSingleton(new SQLiteContainer(ConnectionString))
-                .AddTransient<SQLiteInitializer>();
+            services.AddSingleton(new SQLiteContainer(ConnectionString));
 
             services
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
@@ -66,9 +64,9 @@ namespace MetricsAgent
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
-            initializer.Init();
+            migrationRunner.MigrateUp();
 
             if (env.IsDevelopment())
             {

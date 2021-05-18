@@ -37,10 +37,8 @@ namespace MetricsManager
                 .AddLogging(logging => logging.AddFluentMigratorConsole());
 
             services.AddAutoMapper(typeof(MapperProfile));
-            services
-                .AddSingleton(new SQLiteContainer(ConnectionString))
-                .AddTransient<SQLiteInitializer>()
-                ;
+            services.AddSingleton(new SQLiteContainer(ConnectionString));
+
             services
                 .AddSingleton<IAgentsRepository, AgentsRepository>()
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
@@ -65,9 +63,9 @@ namespace MetricsManager
                 ;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
-            initializer.Init();
+            migrationRunner.MigrateUp();
 
             if (env.IsDevelopment())
             {

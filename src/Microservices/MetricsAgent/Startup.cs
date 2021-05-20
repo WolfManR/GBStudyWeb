@@ -1,3 +1,7 @@
+using System.IO;
+using System.Reflection;
+using System;
+
 using FluentMigrator.Runner;
 using MetricsAgent.DataBase;
 using MetricsAgent.DataBase.Interfaces;
@@ -30,7 +34,15 @@ namespace MetricsAgent
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"}));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"});
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb

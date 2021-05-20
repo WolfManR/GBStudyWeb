@@ -40,7 +40,7 @@ namespace MetricsManager.DataBase.Repositories
             }
             
             var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod.Count > 0 ? byTimePeriod : null;
+            return byTimePeriod;
         }
 
         /// <inheritdoc />
@@ -67,7 +67,7 @@ namespace MetricsManager.DataBase.Repositories
             
             
             var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod.Count > 0 ? byTimePeriod : null;
+            return byTimePeriod;
         }
 
         /// <inheritdoc />

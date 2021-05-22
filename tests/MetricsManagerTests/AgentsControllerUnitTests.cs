@@ -1,3 +1,4 @@
+using AutoMapper;
 using MetricsManager.Controllers;
 using MetricsManager.Controllers.Requests;
 using MetricsManager.DataBase.Interfaces;
@@ -17,7 +18,8 @@ namespace MetricsManagerTests
         {
             _repoMock = new();
             Mock<ILogger<AgentsController>> loggerMock = new();
-            _controller = new(_repoMock.Object, loggerMock.Object);
+            Mock<IMapper> mapperMock = new();
+            _controller = new(_repoMock.Object, loggerMock.Object, mapperMock.Object);
         }
         
         [Fact]

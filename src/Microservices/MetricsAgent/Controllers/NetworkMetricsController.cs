@@ -1,4 +1,5 @@
 using System.Linq;
+using AutoMapper;
 using Common;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.Controllers.Responses;
@@ -8,16 +9,19 @@ using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.Controllers
 {
+    [ApiController]
     [Route("api/metrics/network")]
-    public class NetworkMetricsController : ApiController
+    public class NetworkMetricsController : ControllerBase
     {
         private readonly INetworkMetricsRepository _repository;
         private readonly ILogger<NetworkMetricsController> _logger;
+        private readonly IMapper _mapper;
 
-        public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
+        public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace MetricsAgent.Controllers
             }
             return Ok(new NetworkMetricsByTimePeriodResponse()
             {
-                Metrics = result.Select(Mapper.Map<NetworkMetricResponse>)
+                Metrics = result.Select(_mapper.Map<NetworkMetricResponse>)
             });
         }
     }

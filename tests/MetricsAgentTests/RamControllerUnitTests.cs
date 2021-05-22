@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using MetricsAgent.Controllers;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DataBase.Interfaces;
@@ -18,7 +19,8 @@ namespace MetricsAgentTests
         {
             _repoMock = new();
             Mock<ILogger<RamMetricsController>> loggerMock = new();
-            _controller = new(_repoMock.Object,loggerMock.Object);
+            Mock<IMapper> mapperMock = new();
+            _controller = new(_repoMock.Object,loggerMock.Object, mapperMock.Object);
         }
         
         [Fact]

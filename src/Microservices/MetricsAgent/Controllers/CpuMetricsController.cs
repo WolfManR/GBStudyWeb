@@ -1,4 +1,5 @@
 using System.Linq;
+using AutoMapper;
 using Common;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.Controllers.Responses;
@@ -8,16 +9,19 @@ using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.Controllers
 {
+    [ApiController]
     [Route("api/metrics/cpu")]
-    public class CpuMetricsController : ApiController
+    public class CpuMetricsController : ControllerBase
     {
         private readonly ICpuMetricsRepository _repository;
         private readonly ILogger<CpuMetricsController> _logger;
+        private readonly IMapper _mapper;
 
-        public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
+        public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace MetricsAgent.Controllers
 
             return Ok(new CpuMetricsByTimePeriodResponse()
             {
-                Metrics = result.Select(Mapper.Map<CpuMetricResponse>)
+                Metrics = result.Select(_mapper.Map<CpuMetricResponse>)
             });
         }
     }

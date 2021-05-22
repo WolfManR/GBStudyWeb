@@ -1,4 +1,5 @@
 using System.Linq;
+using AutoMapper;
 using Common;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.Controllers.Responses;
@@ -8,16 +9,19 @@ using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.Controllers
 {
+    [ApiController]
     [Route("api/metrics/hdd")]
-    public class HddMetricsController : ApiController
+    public class HddMetricsController : ControllerBase
     {
         private readonly IHddMetricsRepository _repository;
         private readonly ILogger<HddMetricsController> _logger;
+        private readonly IMapper _mapper;
 
-        public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger)
+        public HddMetricsController(IHddMetricsRepository repository, ILogger<HddMetricsController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -43,7 +47,7 @@ namespace MetricsAgent.Controllers
             }
             return Ok(new HddMetricsByTimePeriodResponse()
             {
-                Metrics = result.Select(Mapper.Map<HddMetricResponse>)
+                Metrics = result.Select(_mapper.Map<HddMetricResponse>)
             });
         }
     }

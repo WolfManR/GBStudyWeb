@@ -14,14 +14,12 @@ namespace MetricsAgentTests
         private readonly HddMetricsController _controller;
         private readonly Mock<IHddMetricsRepository> _repoMock;
         
-        
         public HddControllerUnitTests()
         {
             _repoMock = new();
             Mock<ILogger<HddMetricsController>> loggerMock = new();
             _controller = new(_repoMock.Object,loggerMock.Object);
         }
-        
         
         [Fact]
         public void GetFreeHardDriveSpace_ReturnsOk()
@@ -37,7 +35,6 @@ namespace MetricsAgentTests
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-        
         
         [Fact]
         public void GetFreeHardDriveSpace_VerifyRequestToRepository()

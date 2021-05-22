@@ -1,4 +1,5 @@
 using System;
+using Common.Configuration;
 using Dapper;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Models;
@@ -10,10 +11,8 @@ namespace MetricsAgent.DataBase.Repositories
         public CpuMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
-        protected override string TableName { get; } = "cpumetrics";
-
+        
+        protected override string TableName { get; } = Values.CpuMetricsTable;
         
         /// <inheritdoc />
         public override void Create(CpuMetric entity)

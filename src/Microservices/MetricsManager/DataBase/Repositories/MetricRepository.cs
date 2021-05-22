@@ -9,16 +9,13 @@ namespace MetricsManager.DataBase.Repositories
     public abstract class MetricRepository<TEntity,TId, TAgentId> : IRepository<TEntity,TId, TAgentId> where TEntity : IMetricEntity<TId, TAgentId>
     {
         protected readonly SQLiteContainer Container;
-
         
         protected MetricRepository(SQLiteContainer container)
         {
             Container = container;
         }
-
         
         protected abstract string TableName { get; }
-        
         
         /// <inheritdoc />
         public IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
@@ -43,7 +40,7 @@ namespace MetricsManager.DataBase.Repositories
             }
             
             var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod.Count > 0 ? byTimePeriod : null;
+            return byTimePeriod;
         }
 
         /// <inheritdoc />
@@ -70,10 +67,32 @@ namespace MetricsManager.DataBase.Repositories
             
             
             var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod.Count > 0 ? byTimePeriod : null;
+            return byTimePeriod;
         }
 
         /// <inheritdoc />
         public abstract void Create(TEntity entity);
+
+        public DateTimeOffset GetAgentLastMetricDate(int agentId)
+        {
+            using var connection = Container.CreateConnection();
+            var result = connection.ExecuteScalar<long>(
+                $"select Max(time) from {TableName} where agentId = @agentId",
+                new { agentId });
+
+            if (result >= 0)
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(result);
+            }
+
+            throw new InvalidOperationException("Failure to get last metric date")
+            {
+                Data =
+                {
+                    ["agentId"] = agentId,
+                    ["table"] = TableName
+                }
+            };
+        }
     }
 }

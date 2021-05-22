@@ -8,5 +8,6 @@ namespace MetricsManager.DataBase.Interfaces
         IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to);
         IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to, TAgentId agentId);
         void Create(TEntity entity);
+        DateTimeOffset GetAgentLastMetricDate(int agentId);
     }
 }

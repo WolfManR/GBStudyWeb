@@ -14,15 +14,21 @@ namespace MetricsManager.Controllers
     {
         private readonly IAgentsRepository _repository;
         private readonly ILogger<AgentsController> _logger;
-
         
         public AgentsController(IAgentsRepository repository, ILogger<AgentsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-
-
+        
+        /// <summary>
+        /// Register agent by it's uri
+        /// </summary>
+        /// <param name="request">contains uri to agent</param>
+        /// <response code="200">successfully registered</response>
+        /// <response code="409">agent already registered</response>
+        /// <response code="400">can't register agent</response>
+        /// <response code="500">something bad happen on server</response>
         [HttpPost("register")]
         public IActionResult RegisterAgent([FromBody] RegisterAgentRequest request)
         {
@@ -39,7 +45,7 @@ namespace MetricsManager.Controllers
                     e,
                     "Failure to add entity: {Uri} to database, entity already exist",
                     e.Data["uri"]);
-                return Problem("Agent already registered");
+                return Conflict("Agent already registered");
             }
             catch (InvalidOperationException e)
             {
@@ -61,6 +67,13 @@ namespace MetricsManager.Controllers
             }
         }
 
+        /// <summary>
+        /// Enable agent by it's Id
+        /// </summary>
+        /// <param name="agentId">identifier of agent</param>
+        /// <response code="200">agent enabled</response>
+        /// <response code="400">agent not exist</response>
+        /// <response code="500">something bad happen on server</response>
         [HttpPut("enable/{agentId}")]
         public IActionResult EnableAgentById([FromRoute] int agentId)
         {
@@ -81,7 +94,7 @@ namespace MetricsManager.Controllers
                     "Failure to update entity: {Id} {Uri} in database, entity not exist",
                     e.Data["id"],
                     e.Data["uri"]);
-                return Problem("Agent not exist");
+                return BadRequest("Agent not exist");
             }
             catch (Exception e)
             {
@@ -94,6 +107,13 @@ namespace MetricsManager.Controllers
             }
         }
 
+        /// <summary>
+        /// Disable agent by it's Id
+        /// </summary>
+        /// <param name="agentId">identifier of agent</param>
+        /// <response code="200">agent disabled</response>
+        /// <response code="400">agent not exist</response>
+        /// <response code="500">something bad happen on server</response>
         [HttpPut("disable/{agentId}")]
         public IActionResult DisableAgentById([FromRoute] int agentId)
         {
@@ -114,7 +134,7 @@ namespace MetricsManager.Controllers
                     "Failure to update entity: {Id} {Uri} in database, entity not exist",
                     e.Data["id"],
                     e.Data["uri"]);
-                return Problem("Agent not exist");
+                return BadRequest("Agent not exist");
             }
             catch (Exception e)
             {
@@ -127,14 +147,14 @@ namespace MetricsManager.Controllers
             }
         }
 
+        /// <summary>
+        /// Get registered agents
+        /// </summary>
+        /// <returns>List of agent's</returns>
         [HttpGet]
         public IActionResult GetRegisteredAgents()
         {
             var agents = _repository.Get();
-            if (agents is null)
-            {
-                return NotFound();
-            }
 
             return Ok(new GetRegisteredAgentsResponse()
             {

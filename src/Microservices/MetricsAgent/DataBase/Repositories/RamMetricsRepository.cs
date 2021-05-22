@@ -1,4 +1,5 @@
 using System;
+using Common.Configuration;
 using Dapper;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Models;
@@ -10,11 +11,9 @@ namespace MetricsAgent.DataBase.Repositories
         public RamMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
+        
         /// <inheritdoc />
-        protected override string TableName { get; } = "rammetrics";
-
+        protected override string TableName { get; } = Values.RamMetricsTable;
         
         /// <inheritdoc />
         public override void Create(RamMetric entity)

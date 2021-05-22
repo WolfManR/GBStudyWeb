@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Common.Configuration;
+
 using Dapper;
+
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
 
@@ -10,34 +14,33 @@ namespace MetricsManager.DataBase.Repositories
     public class AgentsRepository : IAgentsRepository
     {
         private readonly SQLiteContainer _container;
-
+        private const string TableName = Values.AgentsMetricsTable;
 
         public AgentsRepository(SQLiteContainer container)
         {
             _container = container;
         }
 
-
         /// <inheritdoc />
         public void Create(AgentInfo agent)
         {
             using var connection = _container.CreateConnection();
 
-            var count = connection.ExecuteScalar<int>("SELECT Count(*) FROM agents WHERE uri=@uri;", new { uri = agent.Uri });
+            var count = connection.ExecuteScalar<int>($"SELECT Count(*) FROM {TableName} WHERE uri=@uri;", new { uri = agent.Uri });
             if (count > 0)
             {
-                throw new ArgumentException("Agent already exist") {Data = {["uri"] = agent.Uri}};
+                throw new ArgumentException("Agent already exist") { Data = { ["uri"] = agent.Uri } };
             }
 
             var result = connection.Execute(
-                "INSERT INTO agents(uri,isenabled) VALUES (@uri,@isenabled);",
+                $"INSERT INTO {TableName}(uri,isenabled) VALUES (@uri,@isenabled);",
                 new { uri = agent.Uri, isenabled = agent.IsEnabled }
                 );
-            
+
 
             if (result <= 0)
             {
-                throw new InvalidOperationException("Failure to add agent") {Data = {["uri"] = agent.Uri}};
+                throw new InvalidOperationException("Failure to add agent") { Data = { ["uri"] = agent.Uri } };
             }
         }
 
@@ -47,10 +50,10 @@ namespace MetricsManager.DataBase.Repositories
             using var connection = _container.CreateConnection();
 
             var count = connection.ExecuteScalar<int>(
-                "SELECT Count(*) FROM agents WHERE id=@id",
+                $"SELECT Count(*) FROM {TableName} WHERE id=@id",
                 new { id = agent.Id }
                 );
-            if (count > 0)
+            if (count <= 0)
             {
                 throw new ArgumentException($"Agent with id: {agent.Id} not exist", nameof(agent))
                 {
@@ -64,9 +67,13 @@ namespace MetricsManager.DataBase.Repositories
             }
 
             var result = connection.Execute(
-                "UPDATE agents SET uri=@uri, isenabled=@isenabled where id=@id;",
-                new { uri = agent.Uri, isenabled = agent.IsEnabled }
-                );
+                $"UPDATE {TableName} SET uri=@uri, isenabled=@isenabled where id=@id;",
+                new
+                {
+                    uri = agent.Uri,
+                    isenabled = agent.IsEnabled,
+                    id = agent.Id
+                });
 
             if (result <= 0)
             {
@@ -86,15 +93,15 @@ namespace MetricsManager.DataBase.Repositories
         public IList<AgentInfo> Get()
         {
             using var connection = _container.CreateConnection();
-            var temp = connection.Query<AgentInfo>("SELECT * FROM agents").ToList();
-            return temp.Count > 0 ? temp : null;
+            var temp = connection.Query<AgentInfo>($"SELECT * FROM {TableName}").ToList();
+            return temp;
         }
 
         /// <inheritdoc />
         public AgentInfo GetById(int id)
         {
             using var connection = _container.CreateConnection();
-            return connection.QuerySingle<AgentInfo>("SELECT * FROM agents WHERE id=@id", new { id });
+            return connection.QuerySingle<AgentInfo>($"SELECT * FROM {TableName} WHERE id=@id", new { id });
         }
     }
 }

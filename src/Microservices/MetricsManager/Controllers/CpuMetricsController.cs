@@ -13,7 +13,6 @@ namespace MetricsManager.Controllers
     {
         private readonly ICpuMetricsRepository _repository;
         private readonly ILogger<CpuMetricsController> _logger;
-
         
         public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
@@ -21,7 +20,11 @@ namespace MetricsManager.Controllers
             _logger = logger;
         }
         
-        
+        /// <summary>
+        /// Get metrics by agent between time range
+        /// </summary>
+        /// <param name="request">filter that contains agent id and time range</param>
+        /// <returns>response that contains list of metrics</returns>
         [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent([FromRoute] CpuMetricsFromAgentRequest request)
         {
@@ -33,10 +36,6 @@ namespace MetricsManager.Controllers
                 request.AgentId);
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime, request.AgentId);
-            if (result is null)
-            {
-                return NotFound();
-            }
             
             return Ok(new CpuGetMetricsFromAgentResponse()
             {
@@ -44,6 +43,11 @@ namespace MetricsManager.Controllers
             });
         }
 
+        /// <summary>
+        /// Get metrics from all registered agents between time range
+        /// </summary>
+        /// <param name="request">filter that contains time range</param>
+        /// <returns>response that contains list of metrics</returns>
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAllCluster([FromRoute] CpuMetricsFromAllClusterRequest request)
         {
@@ -54,10 +58,6 @@ namespace MetricsManager.Controllers
                 request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
-            if (result is null)
-            {
-                return NotFound();
-            }
             
             return Ok(new CpuGetMetricsFromAllClusterResponse()
             {

@@ -1,5 +1,4 @@
 using Common;
-using MetricsAgent.DataBase.Interfaces;
 
 namespace MetricsAgent.DataBase.Models
 {

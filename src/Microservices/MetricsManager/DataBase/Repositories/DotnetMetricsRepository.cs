@@ -1,4 +1,5 @@
 using System;
+using Common.Configuration;
 using Dapper;
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
@@ -10,12 +11,10 @@ namespace MetricsManager.DataBase.Repositories
         public DotnetMetricsRepository(SQLiteContainer container) : base(container)
         {
         }
-
-
-        /// <inheritdoc />
-        protected override string TableName { get; } = "dotnetmetrics";
         
-
+        /// <inheritdoc />
+        protected override string TableName { get; } = Values.DotnetMetricsTable;
+        
         /// <inheritdoc />
         public override void Create(DotnetMetric entity)
         {

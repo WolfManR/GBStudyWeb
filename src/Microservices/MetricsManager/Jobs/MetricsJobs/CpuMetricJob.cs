@@ -12,60 +12,42 @@ using Quartz;
 namespace MetricsManager.Jobs.MetricsJobs
 {
     [DisallowConcurrentExecution]
-    public class CpuMetricJob : IJob
+    public class CpuMetricJob : MetricJob<CpuMetric, int>
     {
-        private readonly ICpuMetricsRepository _metricsRepository;
         private readonly IMetricsClient _client;
-        private readonly IAgentsRepository _agentsRepository;
 
-        public CpuMetricJob(ICpuMetricsRepository metricsRepository, IMetricsClient client, IAgentsRepository agentsRepository)
+        public CpuMetricJob(ICpuMetricsRepository metricsRepository, IMetricsClient client, IAgentsRepository agentsRepository) : 
+            base(metricsRepository, agentsRepository)
         {
-            _metricsRepository = metricsRepository;
             _client = client;
-            _agentsRepository = agentsRepository;
         }
 
-        public async Task Execute(IJobExecutionContext context)
+        protected override async Task<IEnumerable<CpuMetric>> GetMetricsByTimePeriod(AgentInfo agent, DateTimeOffset from, DateTimeOffset to)
         {
-            var agents = _agentsRepository.Get();
-            for (var i = 0; i < agents.Count; i++)
-            {
-                var agent = agents[i];
-                if(!agent.IsEnabled) continue;
+            var response = await _client.GetMetrics(PrepareRequest(agent.Uri,from,to)).ConfigureAwait(false);
 
-                var response = await GetMetricsByTimePeriod(agent.Uri, GetLastMetricDate(agent.Id), DateTimeOffset.UtcNow);
-                var metrics = response.Select(r => new CpuMetric()
-                {
-                    AgentId = agent.Id,
-                    Time = r.Time.ToUnixTimeSeconds(),
-                    Value = r.Value
-                }).ToArray();
-                AddNewMetrics(metrics);
-            }
+            var metrics = response.Select(r => ToMetric(agent.Id, r)).ToArray();
+            return metrics;
         }
 
-        private async Task<IEnumerable<CpuMetricResponse>> GetMetricsByTimePeriod(string agentUrl, DateTimeOffset from, DateTimeOffset to)
+        private static CpuMetricsRequest PrepareRequest(string agentUrl, DateTimeOffset from, DateTimeOffset to)
         {
-            var request = new CpuMetricsRequest()
+            return new()
             {
                 AgentUrl = agentUrl,
                 FromTime = from,
                 ToTime = to
             };
-            return await _client.GetMetrics(request).ConfigureAwait(false);
         }
 
-        private DateTimeOffset GetLastMetricDate(int agentId)
+        private static CpuMetric ToMetric(int agentId, CpuMetricResponse response)
         {
-            return _metricsRepository.GetAgentLastMetricDate(agentId);
-        }
-
-        private void AddNewMetrics(CpuMetric[] metrics)
-        {
-            for (var i = 0; i < metrics.Length; i++)
+            return new()
             {
-                _metricsRepository.Create(metrics[i]);
-            }
+                AgentId = agentId,
+                Time = response.Time.ToUnixTimeSeconds(),
+                Value = response.Value
+            };
         }
     }
 }

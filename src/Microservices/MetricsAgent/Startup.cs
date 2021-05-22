@@ -1,3 +1,7 @@
+using System.IO;
+using System.Reflection;
+using System;
+
 using FluentMigrator.Runner;
 using MetricsAgent.DataBase;
 using MetricsAgent.DataBase.Interfaces;
@@ -30,7 +34,15 @@ namespace MetricsAgent
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"}));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"});
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
@@ -40,9 +52,7 @@ namespace MetricsAgent
                 .AddLogging(logging => logging.AddFluentMigratorConsole());
 
             services.AddAutoMapper(typeof(MapperProfile));
-            services
-                .AddSingleton(new SQLiteContainer(ConnectionString))
-                .AddTransient<SQLiteInitializer>();
+            services.AddSingleton(new SQLiteContainer(ConnectionString));
 
             services
                 .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
@@ -66,8 +76,10 @@ namespace MetricsAgent
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
         {
+            migrationRunner.MigrateUp();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,9 +87,6 @@ namespace MetricsAgent
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetricsAgent v1"));
             }
 
-            initializer.Init();
-            
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

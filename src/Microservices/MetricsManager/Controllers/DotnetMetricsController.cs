@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Common;
 using MetricsManager.Controllers.Requests;
@@ -14,58 +13,56 @@ namespace MetricsManager.Controllers
     {
         private readonly IDotnetMetricsRepository _repository;
         private readonly ILogger<DotnetMetricsController> _logger;
-
+        
         public DotnetMetricsController(IDotnetMetricsRepository repository, ILogger<DotnetMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
         }
-        
+
+        /// <summary>
+        /// Get metrics by agent between time range
+        /// </summary>
+        /// <param name="request">filter that contains agent id and time range</param>
+        /// <returns>response that contains list of metrics</returns>
         [HttpGet("errors-count/agent/{agentId}/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCountFromAgent([FromRoute] ErrorsCountFromAgentRequest request)
+        public IActionResult GetMetricsFromAgent([FromRoute] ErrorsCountFromAgentRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get dotnet metrics by time period request received: {From}, {To}, for agent: {AgentId}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get dotnet metrics by time period request received: {From}, {To}, for agent: {AgentId}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"),
                 request.AgentId);
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime, request.AgentId);
-            if (result is null)
+            
+            return Ok(new DotnetGetMetricsFromAgentResponse()
             {
-                return NotFound();
-            }
-            return Ok(new DotnetGetMetricsFromAgentResponse(){Metrics = result.Select(m =>new DotnetMetricResponse()
-            {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<DotnetMetricResponse>)
+            });
         }
 
+        /// <summary>
+        /// Get metrics from all registered agents between time range
+        /// </summary>
+        /// <param name="request">filter that contains time range</param>
+        /// <returns>response that contains list of metrics</returns>
         [HttpGet("errors-count/cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetErrorsCountFromAllCluster([FromRoute] ErrorsCountFromAllClusterRequest request)
+        public IActionResult GetMetricsFromAllCluster([FromRoute] ErrorsCountFromAllClusterRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
-                "Get dotnet metrics by time period request received: {From}, {To}"
-                ,request.FromTime.ToString("yyyy-M-d dddd"),
+                "Get dotnet metrics by time period request received: {From}, {To}",
+                request.FromTime.ToString("yyyy-M-d dddd"),
                 request.ToTime.ToString("yyyy-M-d dddd"));
 
             var result = _repository.GetByTimePeriod(request.FromTime, request.ToTime);
-            if (result is null)
+            
+            return Ok(new DotnetGetMetricsFromAllClusterResponse()
             {
-                return NotFound();
-            }
-            return Ok(new DotnetGetMetricsFromAllClusterResponse(){Metrics = result.Select(m =>new DotnetMetricResponse()
-            {
-                Id = m.Id,
-                Time = DateTimeOffset.FromUnixTimeSeconds(m.Time),
-                Value = m.Value,
-                AgentId = m.AgentId
-            }).ToList()});
+                Metrics = result.Select(Mapper.Map<DotnetMetricResponse>)
+            });
         }
     }
 }

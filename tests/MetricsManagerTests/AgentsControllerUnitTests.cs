@@ -19,8 +19,7 @@ namespace MetricsManagerTests
             Mock<ILogger<AgentsController>> loggerMock = new();
             _controller = new(_repoMock.Object, loggerMock.Object);
         }
-
-
+        
         [Fact]
         public void RegisterAgent_ReturnsOk()
         {

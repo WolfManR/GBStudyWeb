@@ -1,111 +1,46 @@
 using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
+using Common.Configuration;
+using Dapper;
 using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
 
 namespace MetricsManager.DataBase.Repositories
 {
-    public class NetworkMetricsRepository : INetworkMetricsRepository
+    public class NetworkMetricsRepository : MetricRepository<NetworkMetric, int, int>, INetworkMetricsRepository
     {
-        private readonly SQLiteContainer _container;
-
-        
-        public NetworkMetricsRepository(SQLiteContainer container)
+        public NetworkMetricsRepository(SQLiteContainer container) : base(container)
         {
-            _container = container;
         }
         
         /// <inheritdoc />
-        public IList<NetworkMetric> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
-        {
-            var fromSeconds = from.ToUnixTimeSeconds();
-            var toSeconds = to.ToUnixTimeSeconds();
-            
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM networkmetrics WHERE (time > @from) and (time < @to)";
-            cmd.Parameters.AddWithValue("@from", fromSeconds);
-            cmd.Parameters.AddWithValue("@to", toSeconds);
-            cmd.Prepare();
-            
-            connection.Open();
-            var temp = new List<NetworkMetric>();
-            using var reader = cmd.ExecuteReader();
-            
-            while (reader.Read())
-            {
-                temp.Add(new()
-                {
-                    Id = reader.GetInt32(0),
-                    AgentId = reader.GetInt32(1),
-                    Time = reader.GetInt32(2),
-                    Value = reader.GetInt32(3)
-                });
-            }
-            connection.Close();
-            return temp.Count > 0 ? temp : null;
-        }
-
+        protected override string TableName { get; } = Values.NetworkMetricsTable;
+        
         /// <inheritdoc />
-        public IList<NetworkMetric> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to, int agentId)
+        public override void Create(NetworkMetric entity)
         {
-            var fromSeconds = from.ToUnixTimeSeconds();
-            var toSeconds = to.ToUnixTimeSeconds();
-            
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM networkmetrics WHERE (agentId=@agentId) and (time > @from) and (time < @to)";
-            cmd.Parameters.AddWithValue("@from", fromSeconds);
-            cmd.Parameters.AddWithValue("@to", toSeconds);
-            cmd.Parameters.AddWithValue("@agentId", agentId);
-            cmd.Prepare();
-            
-            connection.Open();
-            var temp = new List<NetworkMetric>();
-            using var reader = cmd.ExecuteReader();
-            
-            while (reader.Read())
-            {
-                temp.Add(new()
+            using var connection = Container.CreateConnection();
+            var result = connection.Execute(
+                $"INSERT INTO {TableName}(agentId,time,value) VALUES (@agentId,@time,@value);",
+                new
                 {
-                    Id = reader.GetInt32(0),
-                    AgentId = reader.GetInt32(1),
-                    Time = reader.GetInt32(2),
-                    Value = reader.GetInt32(3)
-                });
-            }
-            connection.Close();
-            return temp.Count > 0 ? temp : null;
-        }
+                    agentId = entity.AgentId,
+                    time = entity.Time,
+                    value = entity.Value,
+                }
+            );
 
-        /// <inheritdoc />
-        public void Create(NetworkMetric entity)
-        {
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "INSERT INTO networkmetrics(agentId,time,value) VALUES (@agentId,@time,@value);";
-            cmd.Parameters.AddWithValue("@value", entity.Value);
-            cmd.Parameters.AddWithValue("@time", entity.Time);
-            cmd.Parameters.AddWithValue("@agentId", entity.AgentId);
-            cmd.Prepare();
-            
-            connection.Open();
-            var result = cmd.ExecuteNonQuery();
-            connection.Close();
-            
-            if (result > 0)
+            if (result <= 0)
             {
-                // _logger.LogInformation(LogEvents.EntityCreationSuccess,"Cpu metric successfully added to database");
-                return;
+                throw new InvalidOperationException("Failure to add network metric")
+                {
+                    Data =
+                    {
+                        ["agentId"] = entity.AgentId,
+                        ["time"] = entity.Time,
+                        ["value"] = entity.Value,
+                    }
+                };
             }
-            
-            // _logger.LogError(
-            //     LogEvents.EntityCreationFailure,
-            //     "Failure to add entity: {Value} {Time} to database",
-            //     entity.Value,
-            //     entity.Time.ToString("h:mm:ss tt zz")
-            // ); 
         }
     }
 }

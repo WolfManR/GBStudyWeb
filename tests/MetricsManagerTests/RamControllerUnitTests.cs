@@ -21,7 +21,6 @@ namespace MetricsManagerTests
             _controller = new(_repoMock.Object,loggerMock.Object);
         }
         
-        
         [Fact]
         public void GetAvailableSpaceInfoFromAgent_ReturnsOk()
         {
@@ -32,7 +31,7 @@ namespace MetricsManagerTests
             var request = new RamMetricsFromAgentRequest(agentId, fromTime, toTime);
 
             //Act
-            var result = _controller.GetAvailableSpaceInfoFromAgent(request);
+            var result = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -47,7 +46,7 @@ namespace MetricsManagerTests
             var request = new RamMetricsFromAllClusterRequest(fromTime, toTime);
             
             //Act
-            var result = _controller.GetAvailableSpaceInfoFromAllCluster(request);
+            var result = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -72,7 +71,7 @@ namespace MetricsManagerTests
             var request = new RamMetricsFromAgentRequest(agentId, fromTime, toTime);
             
             //Act
-            _ = _controller.GetAvailableSpaceInfoFromAgent(request);
+            _ = _controller.GetMetricsFromAgent(request);
 
             // Assert
             _repoMock.Verify(repo => 
@@ -101,7 +100,7 @@ namespace MetricsManagerTests
             var request = new RamMetricsFromAllClusterRequest(fromTime, toTime);
 
             //Act
-            _ = _controller.GetAvailableSpaceInfoFromAllCluster(request);
+            _ = _controller.GetMetricsFromAllCluster(request);
 
             // Assert
             _repoMock.Verify(repo => 

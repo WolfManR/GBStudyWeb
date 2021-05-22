@@ -1,8 +1,6 @@
-using Common;
-
 namespace MetricsManager.DataBase.Models
 {
-    public record DotnetMetric : MetricEntityBase
+    public record DotnetMetric : MetricEntityBase<int>
     {
         public int Value { get; init; }
     }

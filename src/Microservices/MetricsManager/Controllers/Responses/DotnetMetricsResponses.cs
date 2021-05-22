@@ -5,12 +5,12 @@ namespace MetricsManager.Controllers.Responses
 {
     public class DotnetGetMetricsFromAgentResponse
     {
-        public List<DotnetMetricResponse> Metrics { get; init; }
+        public IEnumerable<DotnetMetricResponse> Metrics { get; init; }
     }
 
     public class DotnetGetMetricsFromAllClusterResponse
     {
-        public List<DotnetMetricResponse> Metrics { get; init; }
+        public IEnumerable<DotnetMetricResponse> Metrics { get; init; }
     }
     
     public class DotnetMetricResponse{

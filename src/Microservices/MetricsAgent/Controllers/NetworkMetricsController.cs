@@ -19,9 +19,16 @@ namespace MetricsAgent.Controllers
             _repository = repository;
             _logger = logger;
         }
-        
+
+        /// <summary>
+        /// Get network metrics by time period
+        /// </summary>
+        /// <param name="request">Request that hold time period filter</param>
+        /// <returns>List of metrics that have been saved over a given time range</returns>
+        /// <response code="200">if metrics found</response>
+        /// <response code="404">if metrics not found</response>
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetrics([FromRoute] NetworkMetricsRequest request)
+        public IActionResult GetByTimePeriod([FromRoute] NetworkMetricsRequest request)
         {
             _logger.LogInformation(
                 LogEvents.RequestReceived,
@@ -34,7 +41,10 @@ namespace MetricsAgent.Controllers
             {
                 return NotFound();
             }
-            return Ok(new NetworkMetricsByTimePeriodResponse(){Metrics = result.Select(m => m.Value).ToList()});
+            return Ok(new NetworkMetricsByTimePeriodResponse()
+            {
+                Metrics = result.Select(Mapper.Map<NetworkMetricResponse>)
+            });
         }
     }
 }

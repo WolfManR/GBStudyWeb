@@ -1,82 +1,44 @@
 using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using Common;
+using Common.Configuration;
+using Dapper;
 using MetricsAgent.DataBase.Interfaces;
 using MetricsAgent.DataBase.Models;
-using Microsoft.Extensions.Logging;
 
 namespace MetricsAgent.DataBase.Repositories
 {
-    public class RamMetricsRepository : IRamMetricsRepository
+    public class RamMetricsRepository : RepositoryBase<RamMetric,int>, IRamMetricsRepository
     {
-        private readonly SQLiteContainer _container;
-        private readonly ILogger<RamMetricsRepository> _logger;
-
-        
-        public RamMetricsRepository(SQLiteContainer container, ILogger<RamMetricsRepository> logger)
+        public RamMetricsRepository(SQLiteContainer container) : base(container)
         {
-            _container = container;
-            _logger = logger;
         }
         
+        /// <inheritdoc />
+        protected override string TableName { get; } = Values.RamMetricsTable;
         
         /// <inheritdoc />
-        public IList<RamMetric> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
+        public override void Create(RamMetric entity)
         {
-            var fromSeconds = from.ToUnixTimeSeconds();
-            var toSeconds = to.ToUnixTimeSeconds();
-            
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "SELECT * FROM rammetrics WHERE (time > @from) and (time < @to)";
-            cmd.Parameters.AddWithValue("@from", fromSeconds);
-            cmd.Parameters.AddWithValue("@to", toSeconds);
-            cmd.Prepare();
-            
-            connection.Open();
-            var temp = new List<RamMetric>();
-            using var reader = cmd.ExecuteReader();
-            
-            while (reader.Read())
-            {
-                temp.Add(new()
+            using var connection = Container.CreateConnection();
+            var result = connection.Execute(
+                $"INSERT INTO {TableName}(value,time) VALUES (@value,@time);",
+                new
                 {
-                    Id = reader.GetInt32(0),
-                    Value = reader.GetInt32(1),
-                    Time = reader.GetInt32(2) 
-                });
-            }
-            connection.Close();
-            return temp.Count > 0 ? temp : null;
-        }
-
-        /// <inheritdoc />
-        public void Create(RamMetric entity)
-        {
-            using var connection = _container.CreateConnection();
-            using var cmd = new SQLiteCommand(connection);
-            cmd.CommandText = "INSERT INTO rammetrics(value,time) VALUES (@value,@time);";
-            cmd.Parameters.AddWithValue("@value", entity.Value);
-            cmd.Parameters.AddWithValue("@time", entity.Time);
-            cmd.Prepare();
-            
-            connection.Open();
-            var result = cmd.ExecuteNonQuery();
-            connection.Close();
-            
-            if (result > 0)
-            {
-                _logger.LogInformation(LogEvents.EntityCreationSuccess,"Ram metric successfully added to database");
-                return;
-            }
-            
-            _logger.LogError(
-                LogEvents.EntityCreationFailure,
-                "Failure to add entity: {Value} {Time} to database",
-                entity.Value,
-                entity.Time.ToString("h:mm:ss tt zz")
+                    value = entity.Value,
+                    time = entity.Time
+                }
             );
+            
+            if (result <= 0)
+            {
+                throw new InvalidOperationException("Failure to add entity to database")
+                {
+                    Data =
+                    {
+                        ["value"] = entity.Value,
+                        ["time"] = entity.Time
+                    }
+                };
+            }
         }
     }
 }

@@ -4,8 +4,13 @@ namespace MetricsManager.DataBase
 {
     public class SQLiteContainer
     {
-        private const string ConnectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-
-        public SQLiteConnection CreateConnection() => new SQLiteConnection(ConnectionString);
+        private readonly string _connectionString;
+        
+        public SQLiteContainer(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+        
+        public SQLiteConnection CreateConnection() => new(_connectionString);
     }
 }

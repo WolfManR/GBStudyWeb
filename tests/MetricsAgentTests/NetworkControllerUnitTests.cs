@@ -21,7 +21,6 @@ namespace MetricsAgentTests
             _controller = new(_repoMock.Object,loggerMock.Object);
         }
         
-        
         [Fact]
         public void GetErrorsCount_ReturnsOk()
         {
@@ -31,12 +30,11 @@ namespace MetricsAgentTests
             NetworkMetricsRequest request = new(fromTime,toTime);
             
             //Act
-            var result = _controller.GetMetrics(request);
+            var result = _controller.GetByTimePeriod(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-        
         
         [Fact]
         public void GetFreeHardDriveSpace_VerifyRequestToRepository()
@@ -55,7 +53,7 @@ namespace MetricsAgentTests
             NetworkMetricsRequest request = new(fromTime,toTime);
             
             //Act
-            _ = _controller.GetMetrics(request);
+            _ = _controller.GetByTimePeriod(request);
 
             // Assert
             _repoMock.Verify(repo => 

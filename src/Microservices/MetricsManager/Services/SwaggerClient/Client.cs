@@ -16,73 +16,73 @@ namespace MetricsManager.Services.SwaggerClient
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.11.1.0 (NJsonSchema v10.4.3.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IClient
+    public partial interface IMetricsAgentClient
     {
         /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
+        System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
+        System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
+        System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get network metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
+        System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get network metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>Get ram metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
+        System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get ram metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.11.1.0 (NJsonSchema v10.4.3.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class Client : IClient
+    public partial class MetricsAgentClient : IMetricsAgentClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<System.Text.Json.JsonSerializerOptions> _settings;
 
-        public Client(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public MetricsAgentClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
             _httpClient = httpClient;
@@ -111,18 +111,18 @@ namespace MetricsManager.Services.SwaggerClient
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
         /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
+        public System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
         {
             return ApiMetricsCpuFromToAsync(fromTime, toTime, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -142,6 +142,7 @@ namespace MetricsManager.Services.SwaggerClient
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -166,13 +167,12 @@ namespace MetricsManager.Services.SwaggerClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("if metrics not found", status_, responseText_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<CpuMetricsByTimePeriodResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -195,18 +195,18 @@ namespace MetricsManager.Services.SwaggerClient
         }
 
         /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
+        public System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
         {
             return ApiMetricsDotnetFromToAsync(fromTime, toTime, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -226,6 +226,7 @@ namespace MetricsManager.Services.SwaggerClient
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -250,13 +251,12 @@ namespace MetricsManager.Services.SwaggerClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("if metrics not found", status_, responseText_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<DotnetMetricsByTimePeriodResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -279,18 +279,18 @@ namespace MetricsManager.Services.SwaggerClient
         }
 
         /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
+        public System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
         {
             return ApiMetricsHddFromToAsync(fromTime, toTime, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -310,6 +310,7 @@ namespace MetricsManager.Services.SwaggerClient
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -334,13 +335,12 @@ namespace MetricsManager.Services.SwaggerClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("if metrics not found", status_, responseText_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<HddMetricsByTimePeriodResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -363,18 +363,18 @@ namespace MetricsManager.Services.SwaggerClient
         }
 
         /// <summary>Get network metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
+        public System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
         {
             return ApiMetricsNetworkFromToAsync(fromTime, toTime, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get network metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -394,6 +394,7 @@ namespace MetricsManager.Services.SwaggerClient
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -418,13 +419,12 @@ namespace MetricsManager.Services.SwaggerClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("if metrics not found", status_, responseText_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<NetworkMetricsByTimePeriodResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -447,18 +447,18 @@ namespace MetricsManager.Services.SwaggerClient
         }
 
         /// <summary>Get ram metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
+        public System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime)
         {
             return ApiMetricsRamFromToAsync(fromTime, toTime, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>Get ram metrics by time period</summary>
-        /// <returns>if metrics found</returns>
+        /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -478,6 +478,7 @@ namespace MetricsManager.Services.SwaggerClient
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -502,13 +503,12 @@ namespace MetricsManager.Services.SwaggerClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
-                        }
-                        else
-                        if (status_ == 404)
-                        {
-                            string responseText_ = (response_.Content == null) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("if metrics not found", status_, responseText_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<RamMetricsByTimePeriodResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -630,7 +630,110 @@ namespace MetricsManager.Services.SwaggerClient
         }
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class CpuMetricResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public int Value { get; set; }
 
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public System.DateTimeOffset Time { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class CpuMetricsByTimePeriodResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("metrics")]
+        public System.Collections.Generic.ICollection<CpuMetricResponse> Metrics { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class DotnetMetricResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public int Value { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public System.DateTimeOffset Time { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class DotnetMetricsByTimePeriodResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("metrics")]
+        public System.Collections.Generic.ICollection<DotnetMetricResponse> Metrics { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class HddMetricResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public int Value { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public System.DateTimeOffset Time { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class HddMetricsByTimePeriodResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("metrics")]
+        public System.Collections.Generic.ICollection<HddMetricResponse> Metrics { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class NetworkMetricResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public int Value { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public System.DateTimeOffset Time { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class NetworkMetricsByTimePeriodResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("metrics")]
+        public System.Collections.Generic.ICollection<NetworkMetricResponse> Metrics { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class RamMetricResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public int Value { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public System.DateTimeOffset Time { get; set; }
+
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class RamMetricsByTimePeriodResponse
+    {
+        [System.Text.Json.Serialization.JsonPropertyName("metrics")]
+        public System.Collections.Generic.ICollection<RamMetricResponse> Metrics { get; set; }
+
+
+    }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.11.1.0 (NJsonSchema v10.4.3.0 (Newtonsoft.Json v12.0.0.0))")]
     public partial class ApiException : System.Exception

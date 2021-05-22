@@ -12,10 +12,8 @@ namespace MetricsManager.DataBase.Repositories
         {
         }
         
-        /// <inheritdoc />
         protected override string TableName { get; } = Values.CpuMetricsTable;
         
-        /// <inheritdoc />
         public override void Create(CpuMetric entity)
         {
             using var connection = Container.CreateConnection();

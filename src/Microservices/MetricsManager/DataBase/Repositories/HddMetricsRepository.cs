@@ -12,10 +12,8 @@ namespace MetricsManager.DataBase.Repositories
         {
         }
         
-        /// <inheritdoc />
         protected override string TableName { get; } = Values.HddMetricsTable;
         
-        /// <inheritdoc />
         public override void Create(HddMetric entity)
         {
             using var connection = Container.CreateConnection();

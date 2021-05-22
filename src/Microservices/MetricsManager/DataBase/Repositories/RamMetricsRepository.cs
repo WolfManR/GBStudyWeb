@@ -12,10 +12,8 @@ namespace MetricsManager.DataBase.Repositories
         {
         }
         
-        /// <inheritdoc />
         protected override string TableName { get; } = Values.RamMetricsTable;
         
-        /// <inheritdoc />
         public override void Create(RamMetric entity)
         {
             using var connection = Container.CreateConnection();

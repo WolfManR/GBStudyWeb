@@ -6,7 +6,8 @@ using MetricsManager.DataBase.Interfaces;
 
 namespace MetricsManager.DataBase.Repositories
 {
-    public abstract class MetricRepository<TEntity,TId, TAgentId> : IRepository<TEntity,TId, TAgentId> where TEntity : IMetricEntity<TId, TAgentId>
+    public abstract class MetricRepository<TEntity,TId, TAgentId> : IRepository<TEntity,TId, TAgentId>
+        where TEntity : IMetricEntity<TId, TAgentId>
     {
         protected readonly SQLiteContainer Container;
         
@@ -17,7 +18,6 @@ namespace MetricsManager.DataBase.Repositories
         
         protected abstract string TableName { get; }
         
-        /// <inheritdoc />
         public IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
         {
             var fromSeconds = from.ToUnixTimeSeconds();
@@ -39,11 +39,9 @@ namespace MetricsManager.DataBase.Repositories
                     : new { from = fromSeconds, to = toSeconds };
             }
             
-            var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod;
+            return connection.Query<TEntity>(command, commandParameters).ToList();
         }
-
-        /// <inheritdoc />
+        
         public IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to, TAgentId agentId)
         {
             var fromSeconds = from.ToUnixTimeSeconds();
@@ -65,12 +63,9 @@ namespace MetricsManager.DataBase.Repositories
                     : new { agentId, from = fromSeconds, to = toSeconds };
             }
             
-            
-            var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod;
+            return connection.Query<TEntity>(command, commandParameters).ToList();
         }
-
-        /// <inheritdoc />
+        
         public abstract void Create(TEntity entity);
 
         public DateTimeOffset GetAgentLastMetricDate(int agentId)

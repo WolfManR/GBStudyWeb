@@ -17,7 +17,6 @@ namespace MetricsAgent.DataBase.Repositories
             Container = container;
         }
         
-        /// <inheritdoc />
         public virtual IList<TEntity> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
         {
             var fromSeconds = from.ToUnixTimeSeconds();
@@ -39,11 +38,9 @@ namespace MetricsAgent.DataBase.Repositories
                     : new { from = fromSeconds, to = toSeconds };
             }
             
-            var byTimePeriod = connection.Query<TEntity>(command,commandParameters).ToList();
-            return byTimePeriod.Count > 0 ? byTimePeriod : null;
+            return connection.Query<TEntity>(command, commandParameters).ToList();
         }
-
-        /// <inheritdoc />
+        
         public abstract void Create(TEntity entity);
     }
 }

@@ -20,8 +20,7 @@ namespace MetricsManager.DataBase.Repositories
         {
             _container = container;
         }
-
-        /// <inheritdoc />
+        
         public void Create(AgentInfo agent)
         {
             using var connection = _container.CreateConnection();
@@ -36,15 +35,13 @@ namespace MetricsManager.DataBase.Repositories
                 $"INSERT INTO {TableName}(uri,isenabled) VALUES (@uri,@isenabled);",
                 new { uri = agent.Uri, isenabled = agent.IsEnabled }
                 );
-
-
+            
             if (result <= 0)
             {
                 throw new InvalidOperationException("Failure to add agent") { Data = { ["uri"] = agent.Uri } };
             }
         }
-
-        /// <inheritdoc />
+        
         public void Update(AgentInfo agent)
         {
             using var connection = _container.CreateConnection();
@@ -88,16 +85,13 @@ namespace MetricsManager.DataBase.Repositories
                 };
             }
         }
-
-        /// <inheritdoc />
+        
         public IList<AgentInfo> Get()
         {
             using var connection = _container.CreateConnection();
-            var temp = connection.Query<AgentInfo>($"SELECT * FROM {TableName}").ToList();
-            return temp;
+            return connection.Query<AgentInfo>($"SELECT * FROM {TableName}").ToList();
         }
-
-        /// <inheritdoc />
+        
         public AgentInfo GetById(int id)
         {
             using var connection = _container.CreateConnection();

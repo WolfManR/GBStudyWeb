@@ -1,8 +1,10 @@
 using System;
-using Domain;
 using MetricsAgent.Controllers;
 using MetricsAgent.Controllers.Requests;
+using MetricsAgent.DataBase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit;
 
 namespace MetricsAgentTests
@@ -10,11 +12,13 @@ namespace MetricsAgentTests
     public class CpuControllerUnitTests
     {
         private readonly CpuMetricsController _controller;
-        
+        private readonly Mock<ICpuMetricsRepository> _repoMock;
         
         public CpuControllerUnitTests()
         {
-            _controller = new();
+             _repoMock = new();
+             Mock<ILogger<CpuMetricsController>> loggerMock = new();
+            _controller = new(_repoMock.Object, loggerMock.Object);
         }
         
         
@@ -22,9 +26,9 @@ namespace MetricsAgentTests
         public void GetMetrics_ReturnsOk()
         {
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            GetCpuMetricsRequest request = new(fromTime,toTime);
+            var fromTime = DateTimeOffset.FromUnixTimeMilliseconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeMilliseconds(100);
+            CpuMetricsRequest request = new(fromTime,toTime);
             
             //Act
             var result = _controller.GetMetrics(request);
@@ -32,21 +36,34 @@ namespace MetricsAgentTests
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
-        
+
+
         [Fact]
-        public void GetMetricsByPercentile_ReturnsOk()
+        public void GetMetrics_VerifyRequestToRepository()
         {
+            // Mock setup
+            _repoMock.Setup(repo =>
+                    repo
+                        .GetByTimePeriod(
+                            It.IsAny<DateTimeOffset>(),
+                            It.IsAny<DateTimeOffset>()))
+                .Verifiable();
+            
             //Arrange
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.Median;
-            GetCpuMetricsByPercentilesRequest request = new(fromTime,toTime,percentile);
+            var fromTime = DateTimeOffset.FromUnixTimeMilliseconds(0);
+            var toTime = DateTimeOffset.FromUnixTimeMilliseconds(100);
+            CpuMetricsRequest request = new(fromTime,toTime);
             
             //Act
-            var result = _controller.GetMetrics(request);
+            _ = _controller.GetMetrics(request);
 
             // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            _repoMock.Verify(repo => 
+                repo
+                    .GetByTimePeriod(
+                        It.IsAny<DateTimeOffset>(),
+                        It.IsAny<DateTimeOffset>()
+                        ), Times.AtMostOnce());
         }
     }
 }

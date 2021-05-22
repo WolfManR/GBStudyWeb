@@ -1,26 +1,14 @@
 using System;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers.Requests
 {
-    public record GetCpuMetricsFromAgentRequest(
+    public record CpuMetricsFromAgentRequest(
         [FromRoute] int AgentId, 
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 
-    public record GetCpuMetricsByPercentileFromAgentRequest(
-        [FromRoute] int AgentId, 
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime,
-        [FromRoute] Percentile Percentile);
-
-    public record GetCpuMetricsFromAllCluster(
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
-    
-    public record GetCpuMetricsByPercentileFromAllCluster(
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime,
-        [FromRoute] Percentile Percentile);
+    public record CpuMetricsFromAllClusterRequest(
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 }

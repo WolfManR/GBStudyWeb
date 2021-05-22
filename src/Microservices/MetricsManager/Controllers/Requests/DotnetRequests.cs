@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers.Requests
 {
-    public record GetErrorsCountFromAgentRequest(
+    public record ErrorsCountFromAgentRequest(
         [FromRoute] int AgentId,
-        [FromRoute] TimeSpan FromTime,
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime,
+        [FromRoute] DateTimeOffset ToTime);
     
-    public record GetErrorsCountFromAllClusterRequest(
-        [FromRoute] TimeSpan FromTime,
-        [FromRoute] TimeSpan ToTime);
+    public record ErrorsCountFromAllClusterRequest(
+        [FromRoute] DateTimeOffset FromTime,
+        [FromRoute] DateTimeOffset ToTime);
 }

@@ -1,3 +1,6 @@
+using MetricsAgent.DataBase;
+using MetricsAgent.DataBase.Interfaces;
+using MetricsAgent.DataBase.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,10 +23,22 @@ namespace MetricsAgent
         {
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() {Title = "MetricsAgent", Version = "v1"}));
+
+            services
+                .AddSingleton<SQLiteContainer>()
+                .AddSingleton<SQLiteInitializer>()
+                ;
+            services
+                .AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>()
+                .AddSingleton<IDotnetMetricsRepository, DotnetMetricsRepository>()
+                .AddSingleton<IHddMetricsRepository, HddMetricsRepository>()
+                .AddSingleton<INetworkMetricsRepository, NetworkMetricsRepository>()
+                .AddSingleton<IRamMetricsRepository, RamMetricsRepository>()
+                ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SQLiteInitializer initializer)
         {
             if (env.IsDevelopment())
             {
@@ -32,6 +47,8 @@ namespace MetricsAgent
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MetricsAgent v1"));
             }
 
+            initializer.Init();
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

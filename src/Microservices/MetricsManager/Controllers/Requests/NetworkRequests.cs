@@ -1,15 +1,14 @@
 using System;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsManager.Controllers.Requests
 {
-    public record GetNetworkMetricsFromAgentRequest(
+    public record NetworkMetricsFromAgentRequest(
         [FromRoute] int AgentId, 
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 
-    public record GetNetworkMetricsFromAllClusterRequest(
-        [FromRoute] TimeSpan FromTime, 
-        [FromRoute] TimeSpan ToTime);
+    public record NetworkMetricsFromAllClusterRequest(
+        [FromRoute] DateTimeOffset FromTime, 
+        [FromRoute] DateTimeOffset ToTime);
 }

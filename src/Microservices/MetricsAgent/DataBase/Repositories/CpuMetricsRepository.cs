@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using Common;
+using MetricsAgent.DataBase.Interfaces;
+using MetricsAgent.DataBase.Models;
+using Microsoft.Extensions.Logging;
+
+namespace MetricsAgent.DataBase.Repositories
+{
+    public class CpuMetricsRepository : ICpuMetricsRepository
+    {
+        private readonly SQLiteContainer _container;
+        private readonly ILogger<CpuMetricsRepository> _logger;
+
+        public CpuMetricsRepository(SQLiteContainer container, ILogger<CpuMetricsRepository> logger)
+        {
+            _container = container;
+            _logger = logger;
+        }
+
+
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <inheritdoc />
+        public IList<CpuMetric> GetByTimePeriod(DateTimeOffset from, DateTimeOffset to)
+        {
+            var fromSeconds = from.ToUnixTimeSeconds();
+            var toSeconds = to.ToUnixTimeSeconds();
+            
+            using var connection = _container.CreateConnection();
+            using var cmd = new SQLiteCommand(connection);
+            cmd.CommandText = "SELECT * FROM cpumetrics WHERE (time > @from) and (time < @to)";
+            cmd.Parameters.AddWithValue("@from", fromSeconds);
+            cmd.Parameters.AddWithValue("@to", toSeconds);
+            cmd.Prepare();
+            
+            connection.Open();
+            var temp = new List<CpuMetric>();
+            using var reader = cmd.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                temp.Add(new()
+                {
+                    Id = reader.GetInt32(0),
+                    Value = reader.GetInt32(1),
+                    Time = reader.GetInt32(2) 
+                });
+            }
+            connection.Close();
+            return temp.Count > 0 ? temp : null;
+        }
+
+        /// <inheritdoc />
+        public void Create(CpuMetric entity)
+        {
+            using var connection = _container.CreateConnection();
+            using var cmd = new SQLiteCommand(connection);
+            cmd.CommandText = "INSERT INTO cpumetrics(value,time) VALUES (@value,@time);";
+            cmd.Parameters.AddWithValue("@value", entity.Value);
+            cmd.Parameters.AddWithValue("@time", entity.Time);
+            cmd.Prepare();
+            
+            connection.Open();
+            var result = cmd.ExecuteNonQuery();
+            connection.Close();
+            
+            if (result > 0)
+            {
+                _logger.LogInformation(LogEvents.EntityCreationSuccess,"Cpu metric successfully added to database");
+                return;
+            }
+            
+            _logger.LogError(
+                LogEvents.EntityCreationFailure,
+                "Failure to add entity: {Value} {Time} to database",
+                entity.Value,
+                entity.Time.ToString("h:mm:ss tt zz")
+                );
+        }
+    }
+}

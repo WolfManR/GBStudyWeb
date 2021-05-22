@@ -1,7 +1,9 @@
-using System;
 using MetricsManager.Controllers;
 using MetricsManager.Controllers.Requests;
+using MetricsManager.DataBase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit;
 
 namespace MetricsManagerTests
@@ -9,11 +11,13 @@ namespace MetricsManagerTests
     public class AgentsControllerUnitTests
     {
         private readonly AgentsController _controller;
-
-
+        private readonly Mock<IAgentsRepository> _repoMock;
+        
         public AgentsControllerUnitTests()
         {
-            _controller = new();
+            _repoMock = new();
+            Mock<ILogger<AgentsController>> loggerMock = new();
+            _controller = new(_repoMock.Object, loggerMock.Object);
         }
 
 
@@ -21,10 +25,10 @@ namespace MetricsManagerTests
         public void RegisterAgent_ReturnsOk()
         {
             //Arrange
-            var agent = new AgentInfo(1, new("https://localhost:5000"));
+            var request = new RegisterAgentRequest(new("https://localhost:5000"));
 
             //Act
-            var result = _controller.RegisterAgent(agent);
+            var result = _controller.RegisterAgent(request);
 
             // Assert
             _ = Assert.IsAssignableFrom<IActionResult>(result);
@@ -63,7 +67,7 @@ namespace MetricsManagerTests
             var result = _controller.GetRegisteredAgents();
 
             // Assert
-            Assert.Empty(result);
+            _ = Assert.IsAssignableFrom<IActionResult>(result);
         }
     }
 }

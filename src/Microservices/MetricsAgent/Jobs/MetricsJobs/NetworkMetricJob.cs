@@ -27,11 +27,15 @@ namespace MetricsAgent.Jobs.MetricsJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            var networkMetric = Convert.ToInt32(_counter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             try
             {
+                var networkMetric = Convert.ToInt32(_counter.NextValue());
+                var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 _repository.Create(new() { Time = time, Value = networkMetric });
+            }
+            catch (OverflowException e)
+            {
+                _logger.LogError("Cant create network metric, metric value overflow limit of integer", e);
             }
             catch (SQLiteException e) when (e.Message.Contains("no such table"))
             {

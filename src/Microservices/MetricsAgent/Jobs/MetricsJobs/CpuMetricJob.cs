@@ -25,11 +25,15 @@ namespace MetricsAgent.Jobs.MetricsJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            var cpuMetric = Convert.ToInt32(_counter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             try
             {
+                var cpuMetric = Convert.ToInt32(_counter.NextValue());
+                var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 _repository.Create(new() {Time = time, Value = cpuMetric});
+            }
+            catch (OverflowException e)
+            {
+                _logger.LogError("Cant create cpu metric, metric value overflow limit of integer", e);
             }
             catch (SQLiteException e) when (e.Message.Contains("no such table"))
             {
@@ -39,7 +43,6 @@ namespace MetricsAgent.Jobs.MetricsJobs
             {
                 _logger.LogError(LogEvents.EntityCreationFailure, "Cant save cpu metric", e);
             }
-            
             return Task.CompletedTask;
         }
     }

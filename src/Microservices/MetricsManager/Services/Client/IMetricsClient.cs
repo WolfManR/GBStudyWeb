@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using MetricsManager.Services.Client.Requests;
-using MetricsManager.Services.Client.Responses;
+using MetricsManager.Services.SwaggerClient;
 
 namespace MetricsManager.Services.Client
 {

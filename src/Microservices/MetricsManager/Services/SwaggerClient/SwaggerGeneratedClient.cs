@@ -15,74 +15,15 @@ namespace MetricsManager.Services.SwaggerClient
 {
     using System = global::System;
 
+    
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.11.1.0 (NJsonSchema v10.4.3.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial interface IMetricsAgentClient
-    {
-        /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get cpu metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<CpuMetricsByTimePeriodResponse> ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get dotnet metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<DotnetMetricsByTimePeriodResponse> ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get hdd metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<HddMetricsByTimePeriodResponse> ApiMetricsHddFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>Get network metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get network metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NetworkMetricsByTimePeriodResponse> ApiMetricsNetworkFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>Get ram metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>Get ram metrics by time period</summary>
-        /// <returns>Success</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<RamMetricsByTimePeriodResponse> ApiMetricsRamFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.11.1.0 (NJsonSchema v10.4.3.0 (Newtonsoft.Json v12.0.0.0))")]
-    public partial class MetricsAgentClient : IMetricsAgentClient
+    public partial class SwaggerGeneratedClient
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
         private System.Lazy<System.Text.Json.JsonSerializerOptions> _settings;
 
-        public MetricsAgentClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public SwaggerGeneratedClient(string baseUrl, System.Net.Http.HttpClient httpClient)
         {
             BaseUrl = baseUrl;
             _httpClient = httpClient;
@@ -131,9 +72,9 @@ namespace MetricsManager.Services.SwaggerClient
                 throw new System.ArgumentNullException("toTime");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/cpu/from/{fromTime}/to/{toTime}");
-            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/cpu/from/{FromTime}/to/{ToTime}");
+            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -215,9 +156,9 @@ namespace MetricsManager.Services.SwaggerClient
                 throw new System.ArgumentNullException("toTime");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/dotnet/from/{fromTime}/to/{toTime}");
-            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/dotnet/from/{FromTime}/to/{ToTime}");
+            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -299,9 +240,9 @@ namespace MetricsManager.Services.SwaggerClient
                 throw new System.ArgumentNullException("toTime");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/hdd/from/{fromTime}/to/{toTime}");
-            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/hdd/from/{FromTime}/to/{ToTime}");
+            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -383,9 +324,9 @@ namespace MetricsManager.Services.SwaggerClient
                 throw new System.ArgumentNullException("toTime");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/network/from/{fromTime}/to/{toTime}");
-            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/network/from/{FromTime}/to/{ToTime}");
+            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -467,9 +408,9 @@ namespace MetricsManager.Services.SwaggerClient
                 throw new System.ArgumentNullException("toTime");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/ram/from/{fromTime}/to/{toTime}");
-            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("s", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/ram/from/{FromTime}/to/{ToTime}");
+            urlBuilder_.Replace("{FromTime}", System.Uri.EscapeDataString(fromTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{ToTime}", System.Uri.EscapeDataString(toTime.ToString("O", System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;

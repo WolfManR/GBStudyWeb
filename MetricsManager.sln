@@ -1,20 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManager", "src\Microservices\MetricsManager\MetricsManager.csproj", "{5BA9B5DE-96D3-4633-829A-3C6081118D7E}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31313.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsManager", "src\Microservices\MetricsManager\MetricsManager.csproj", "{5BA9B5DE-96D3-4633-829A-3C6081118D7E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{5E400CC0-AFD9-4293-96C0-A021BEDB2D26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{965E0330-4AE6-4E88-8D00-B1739DD717EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerTests", "tests\MetricsManagerTests\MetricsManagerTests.csproj", "{9D0606E1-DD50-46E6-8594-151B03584909}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsManagerTests", "tests\MetricsManagerTests\MetricsManagerTests.csproj", "{9D0606E1-DD50-46E6-8594-151B03584909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgent", "src\Microservices\MetricsAgent\MetricsAgent.csproj", "{5DEE4581-AD33-41EE-821A-5DC1943946C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsAgent", "src\Microservices\MetricsAgent\MetricsAgent.csproj", "{5DEE4581-AD33-41EE-821A-5DC1943946C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsAgentTests", "tests\MetricsAgentTests\MetricsAgentTests.csproj", "{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsAgentTests", "tests\MetricsAgentTests\MetricsAgentTests.csproj", "{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{7CC75757-2461-4D62-89C7-F51163DE9DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "src\Libraries\Common\Common.csproj", "{5BC8E7A1-1607-4905-A9D7-186321FE4EC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "src\Libraries\Common\Common.csproj", "{5BC8E7A1-1607-4905-A9D7-186321FE4EC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{A29AB80A-9E52-4A03-A490-485192A1AFFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerWPF", "src\UI\ManagerWPF\ManagerWPF.csproj", "{19DADC11-EC5E-43D0-8F07-598FF8452AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +49,13 @@ Global
 		{5BC8E7A1-1607-4905-A9D7-186321FE4EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BC8E7A1-1607-4905-A9D7-186321FE4EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BC8E7A1-1607-4905-A9D7-186321FE4EC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19DADC11-EC5E-43D0-8F07-598FF8452AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19DADC11-EC5E-43D0-8F07-598FF8452AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19DADC11-EC5E-43D0-8F07-598FF8452AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19DADC11-EC5E-43D0-8F07-598FF8452AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5BA9B5DE-96D3-4633-829A-3C6081118D7E} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
@@ -49,5 +63,9 @@ Global
 		{5DEE4581-AD33-41EE-821A-5DC1943946C1} = {5E400CC0-AFD9-4293-96C0-A021BEDB2D26}
 		{5FAC30EA-1490-4F8B-84D5-86C82D5AE8ED} = {965E0330-4AE6-4E88-8D00-B1739DD717EF}
 		{5BC8E7A1-1607-4905-A9D7-186321FE4EC9} = {7CC75757-2461-4D62-89C7-F51163DE9DCC}
+		{19DADC11-EC5E-43D0-8F07-598FF8452AEB} = {A29AB80A-9E52-4A03-A490-485192A1AFFE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {751206A9-F6F9-42A2-90C8-57B41038C229}
 	EndGlobalSection
 EndGlobal

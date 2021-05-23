@@ -6,7 +6,7 @@ using MetricsManager.DataBase.Interfaces;
 using MetricsManager.DataBase.Models;
 using MetricsManager.Services.Client;
 using MetricsManager.Services.Client.Requests;
-using MetricsManager.Services.Client.Responses;
+using MetricsManager.Services.SwaggerClient;
 using Quartz;
 
 namespace MetricsManager.Jobs.MetricsJobs

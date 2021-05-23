@@ -30,7 +30,7 @@ namespace MetricsManager.Jobs.MetricsJobs
         private async Task<IEnumerable<TMetric>> GetAgentMetrics(AgentInfo agent)
         {
             if (!agent.IsEnabled) return Enumerable.Empty<TMetric>();
-            return await GetMetricsByTimePeriod(agent, GetLastMetricDate(agent.Id), DateTimeOffset.UtcNow);
+            return await GetMetricsByTimePeriod(agent, GetLastMetricDate(agent.Id), DateTimeOffset.UtcNow).ConfigureAwait(false);
         }
         
         private DateTimeOffset GetLastMetricDate(int agentId)

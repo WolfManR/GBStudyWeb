@@ -5,8 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManagerWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800" Name="Main">
+    <Window.DataContext>
+        <local:MainVM/>
+    </Window.DataContext>
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <local:MetricsCard x:Name="CpuMetricsCard" DataContext="{Binding Cpu}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Width="140">
+            <Button Content="Add Metric" Command="{Binding AddMetricCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

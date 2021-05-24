@@ -1,4 +1,5 @@
-﻿using LiveCharts.Wpf;
+﻿using System;
+using LiveCharts.Wpf;
 using LiveCharts;
 
 namespace ManagerWPF
@@ -16,6 +17,7 @@ namespace ManagerWPF
             };
         }
 
+        public DateTimeOffset Last { get; set; } = new DateTimeOffset();
         private ChartValues<double> _metrics = new ChartValues<double>();
         public SeriesCollection ColumnSeriesValues { get; set; }
         

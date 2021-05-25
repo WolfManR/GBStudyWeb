@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using MetricsAgent;
 using MetricsAgent.Controllers;
 using MetricsAgent.Controllers.Requests;
 using MetricsAgent.DataBase.Interfaces;
@@ -19,8 +20,10 @@ namespace MetricsAgentTests
         {
              _repoMock = new();
              Mock<ILogger<CpuMetricsController>> loggerMock = new();
-             Mock<IMapper> mapperMock = new();
-            _controller = new(_repoMock.Object, loggerMock.Object, mapperMock.Object);
+             IMapper mapper = new Mapper(
+                 new MapperConfiguration(expression => 
+                     expression.AddProfile(typeof(MapperProfile))));
+            _controller = new(_repoMock.Object, loggerMock.Object, mapper);
         }
         
         [Fact]

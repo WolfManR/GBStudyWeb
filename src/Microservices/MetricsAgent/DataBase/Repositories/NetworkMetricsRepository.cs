@@ -12,10 +12,8 @@ namespace MetricsAgent.DataBase.Repositories
         {
         }
         
-        /// <inheritdoc />
         protected override string TableName { get; } = Values.NetworkMetricsTable;
         
-        /// <inheritdoc />
         public override void Create(NetworkMetric entity)
         {
             using var connection = Container.CreateConnection();

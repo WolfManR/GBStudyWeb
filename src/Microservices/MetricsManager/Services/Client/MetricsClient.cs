@@ -1,116 +1,125 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using MetricsManager.Services.Client.Requests;
-using MetricsManager.Services.Client.Responses;
+using MetricsManager.Services.SwaggerClient;
+using Microsoft.Extensions.Logging;
 
 namespace MetricsManager.Services.Client
 {
     public class MetricsClient : IMetricsClient
     {
         private readonly HttpClient _client;
+        private readonly ILogger<MetricsClient> _logger;
 
-        public MetricsClient(HttpClient client)
+        public MetricsClient(HttpClient client, ILogger<MetricsClient> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<CpuMetricResponse>> GetMetrics(CpuMetricsRequest request)
         {
-            var uri = BuildUri(request.AgentUrl, "metrics/cpu", request.FromTime.ToUniversalTime(), request.ToTime);
-            var response = await _client.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            var apiClient = CreateClient(request.AgentUrl);
+            try
             {
-                return Array.Empty<CpuMetricResponse>();
+                var response = await apiClient.ApiMetricsCpuFromToAsync(request.FromTime, request.ToTime).ConfigureAwait(false);
+                return response.Metrics;
             }
-
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            var metrics = await JsonSerializer
-                .DeserializeAsync<CpuMetricsByTimePeriodResponse>( stream, new(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
-
-            return (metrics?.Metrics ?? new List<CpuMetricResponse>()).ToImmutableList();
+            catch (Exception e)
+            {
+                _logger.LogWarning(
+                    e,
+                    "Fail to connect to agent {url} to take CPU metrics in time range [{from} .. {to}]",
+                    request.AgentUrl,
+                    request.FromTime,
+                    request.ToTime);
+                return Enumerable.Empty<CpuMetricResponse>();
+            }
         }
 
         public async Task<IEnumerable<DotnetMetricResponse>> GetMetrics(DotnetMetricsRequest request)
         {
-            var uri = BuildUri(request.AgentUrl, "metrics/dotnet", request.FromTime.ToUniversalTime(), request.ToTime);
-            var response = await _client.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            var apiClient = CreateClient(request.AgentUrl);
+            try
             {
-                return Array.Empty<DotnetMetricResponse>();
+                var response = await apiClient.ApiMetricsDotnetFromToAsync(request.FromTime, request.ToTime).ConfigureAwait(false);
+                return response.Metrics;
             }
-
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            var metrics = await JsonSerializer
-                .DeserializeAsync<DotnetMetricsByTimePeriodResponse>(stream, new(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
-
-            return (metrics?.Metrics ?? new List<DotnetMetricResponse>()).ToImmutableList();
+            catch (Exception e)
+            {
+                _logger.LogWarning(
+                    e,
+                    "Fail to connect to agent {url} to take DOTNET metrics in time range [{from} .. {to}]",
+                    request.AgentUrl,
+                    request.FromTime,
+                    request.ToTime);
+                return Enumerable.Empty<DotnetMetricResponse>();
+            }
         }
 
         public async Task<IEnumerable<HddMetricResponse>> GetMetrics(HddMetricsRequest request)
         {
-            var uri = BuildUri(request.AgentUrl, "metrics/hdd", request.FromTime.ToUniversalTime(), request.ToTime);
-            var response = await _client.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            var apiClient = CreateClient(request.AgentUrl);
+            try
             {
-                return Array.Empty<HddMetricResponse>();
+                var response = await apiClient.ApiMetricsHddFromToAsync(request.FromTime, request.ToTime).ConfigureAwait(false);
+                return response.Metrics;
             }
-
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            var metrics = await JsonSerializer
-                .DeserializeAsync<HddMetricsByTimePeriodResponse>(stream, new(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
-
-            return (metrics?.Metrics ?? new List<HddMetricResponse>()).ToImmutableList();
+            catch (Exception e)
+            {
+                _logger.LogWarning(
+                    e,
+                    "Fail to connect to agent {url} to take HDD metrics in time range [{from} .. {to}]",
+                    request.AgentUrl,
+                    request.FromTime,
+                    request.ToTime);
+                return Enumerable.Empty<HddMetricResponse>();
+            }
         }
 
         public async Task<IEnumerable<NetworkMetricResponse>> GetMetrics(NetworkMetricsRequest request)
         {
-            var uri = BuildUri(request.AgentUrl, "metrics/network", request.FromTime.ToUniversalTime(), request.ToTime);
-            var response = await _client.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            var apiClient = CreateClient(request.AgentUrl);
+            try
             {
-                return Array.Empty<NetworkMetricResponse>();
+                var response = await apiClient.ApiMetricsNetworkFromToAsync(request.FromTime, request.ToTime).ConfigureAwait(false);
+                return response.Metrics;
             }
-
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            var metrics = await JsonSerializer
-                .DeserializeAsync<NetworkMetricsByTimePeriodResponse>(stream, new(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
-
-            return (metrics?.Metrics ?? new List<NetworkMetricResponse>()).ToImmutableList();
+            catch (Exception e)
+            {
+                _logger.LogWarning(
+                    e,
+                    "Fail to connect to agent {url} to take NETWORK metrics in time range [{from} .. {to}]",
+                    request.AgentUrl,
+                    request.FromTime,
+                    request.ToTime);
+                return Enumerable.Empty<NetworkMetricResponse>();
+            }
         }
 
         public async Task<IEnumerable<RamMetricResponse>> GetMetrics(RamMetricsRequest request)
         {
-            var uri = BuildUri(request.AgentUrl, "metrics/ram", request.FromTime.ToUniversalTime(), request.ToTime);
-            var response = await _client.GetAsync(uri).ConfigureAwait(false);
-            if (!response.IsSuccessStatusCode)
+            var apiClient = CreateClient(request.AgentUrl);
+            try
             {
-                return Array.Empty<RamMetricResponse>();
+                var response = await apiClient.ApiMetricsRamFromToAsync(request.FromTime, request.ToTime).ConfigureAwait(false);
+                return response.Metrics;
             }
-
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            var metrics = await JsonSerializer
-                .DeserializeAsync<RamMetricsByTimePeriodResponse>(stream, new(JsonSerializerDefaults.Web))
-                .ConfigureAwait(false);
-
-            return (metrics?.Metrics ?? new List<RamMetricResponse>()).ToImmutableList();
+            catch (Exception e)
+            {
+                _logger.LogWarning(
+                    e,
+                    "Fail to connect to agent {url} to take RAM metrics in time range [{from} .. {to}]",
+                    request.AgentUrl,
+                    request.FromTime,
+                    request.ToTime);
+                return Enumerable.Empty<RamMetricResponse>();
+            }
         }
 
-        private Uri BuildUri(string baseUri, string controller, DateTimeOffset fromTime, DateTimeOffset toTime)
-        {
-            return new($"{baseUri}/api/{controller}/from/{fromTime:O}/to/{toTime:O}");
-        }
+        private SwaggerGeneratedClient CreateClient(string url) => new(url, _client);
     }
 }

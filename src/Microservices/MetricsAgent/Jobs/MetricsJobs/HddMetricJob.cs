@@ -26,11 +26,15 @@ namespace MetricsAgent.Jobs.MetricsJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            var hddMetric = Convert.ToInt32(_counter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             try
             {
+                var hddMetric = Convert.ToInt32(_counter.NextValue());
+                var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 _repository.Create(new() { Time = time, Value = hddMetric });
+            }
+            catch (OverflowException e)
+            {
+                _logger.LogError("Cant create hdd metric, metric value overflow limit of integer", e);
             }
             catch (SQLiteException e) when (e.Message.Contains("no such table"))
             {

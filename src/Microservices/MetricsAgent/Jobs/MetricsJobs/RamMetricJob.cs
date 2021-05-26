@@ -27,15 +27,15 @@ namespace MetricsAgent.Jobs.MetricsJobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            var ramMetric = Convert.ToInt32(_counter.NextValue());
-            var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             try
             {
-                _repository.Create(new()
-                {
-                    Time = time,
-                    Value = ramMetric
-                });
+                var ramMetric = Convert.ToInt32(_counter.NextValue());
+                var time = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                _repository.Create(new() { Time = time, Value = ramMetric });
+            }
+            catch (OverflowException e)
+            {
+                _logger.LogError("Cant create ram metric, metric value overflow limit of integer", e);
             }
             catch (SQLiteException e) when (e.Message.Contains("no such table"))
             {

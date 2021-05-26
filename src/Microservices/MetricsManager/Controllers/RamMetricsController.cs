@@ -1,4 +1,5 @@
 using System.Linq;
+using AutoMapper;
 using Common;
 using MetricsManager.Controllers.Requests;
 using MetricsManager.Controllers.Responses;
@@ -8,16 +9,19 @@ using Microsoft.Extensions.Logging;
 
 namespace MetricsManager.Controllers
 {
+    [ApiController]
     [Route("api/metrics/ram")]
-    public class RamMetricsController : ApiController
+    public class RamMetricsController : ControllerBase
     {
         private readonly IRamMetricsRepository _repository;
         private readonly ILogger<RamMetricsController> _logger;
-        
-        public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger)
+        private readonly IMapper _mapper;
+
+        public RamMetricsController(IRamMetricsRepository repository, ILogger<RamMetricsController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace MetricsManager.Controllers
             
             return Ok(new RamGetMetricsFromAgentResponse()
             {
-                Metrics = result.Select(Mapper.Map<RamMetricResponse>)
+                Metrics = result.Select(_mapper.Map<RamMetricResponse>)
             });
         }
 
@@ -61,7 +65,7 @@ namespace MetricsManager.Controllers
             
             return Ok(new RamGetMetricsFromAllClusterResponse()
             {
-                Metrics = result.Select(Mapper.Map<RamMetricResponse>)
+                Metrics = result.Select(_mapper.Map<RamMetricResponse>)
             });
         }
     }

@@ -9,3 +9,7 @@
 # files
 *.db
 *.user
+*.db-journal
+
+# Logs
+[Ll]ogs/
